@@ -6,12 +6,16 @@
 <style id="app-css">
 /* ==========================================================
    INTAKE QUESTIONNAIRE
-   A manuscript, not a form. The questions are set in a
-   bookish serif because they are somebody asking; the
-   answers are set in a plain sans because they are somebody
-   writing; the annotations are mono because they are the
-   my margin notes. Sections are numbered because this
-   genuinely is a sequence you work through, not decoration.
+   A manuscript, not a form. Questions sit in a bookish serif
+   because they are somebody asking; answers in a plain sans
+   because they are somebody writing; the marginal notes in
+   mono because they are mine, not hers.
+
+   The index rail is the design. Forty three questions in one
+   scroll reads as a wall; the same forty three with a visible
+   map, a per-section state and a way to jump reads as work you
+   can start and put down. The rail's markers encode real state
+   (untouched / part done / done), never decoration.
    ========================================================== */
 
 :root{
@@ -20,186 +24,276 @@
     --ink:#23201C;
     --ink-2:#3D3830;
     --muted:#6B655C;
+    /* 8C8478 read at 3.36:1 on paper, which fails AA for the small mono
+       labels this drives. 736B5E clears it at 4.79:1. */
+    --faint:#736B5E;
     --rule:#DDD6C9;
     --rule-soft:#EAE4D9;
     --pen:#2E4A7D;
     --pen-soft:#E4EAF4;
     --flag:#9C4221;
+    --flag-soft:#F6E7DE;
     --ok:#2F6B4F;
-    --ok-soft:#E3EFE8;
 
     --serif:'Newsreader',Georgia,'Times New Roman',serif;
     --sans:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
     --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
 
-    --measure:64ch;
-    --gutter:clamp(18px,4vw,40px);
+    --gutter:clamp(18px,4vw,44px);
+    --rail:236px;
 }
 
 @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-        --paper:#17150F;
-        --card:#1F1C16;
-        --ink:#EFEADF;
+        --paper:#16140F;
+        --card:#1E1B15;
+        --ink:#F0EBE0;
         --ink-2:#D6CFC2;
         --muted:#A29A8C;
-        --rule:#3A352B;
-        --rule-soft:#2C271F;
-        --pen:#93B0DF;
-        --pen-soft:#232B39;
-        --flag:#E0956C;
-        --ok:#7FC0A0;
-        --ok-soft:#1E2A24;
+        --faint:#8A8275;
+        --rule:#39342A;
+        --rule-soft:#2A251E;
+        --pen:#9CB7E2;
+        --pen-soft:#222A38;
+        --flag:#E49B73;
+        --flag-soft:#2E2119;
+        --ok:#83C4A4;
     }
 }
 :root[data-theme="dark"]{
-    --paper:#17150F;
-    --card:#1F1C16;
-    --ink:#EFEADF;
+    --paper:#16140F;
+    --card:#1E1B15;
+    --ink:#F0EBE0;
     --ink-2:#D6CFC2;
     --muted:#A29A8C;
-    --rule:#3A352B;
-    --rule-soft:#2C271F;
-    --pen:#93B0DF;
-    --pen-soft:#232B39;
-    --flag:#E0956C;
-    --ok:#7FC0A0;
-    --ok-soft:#1E2A24;
+    --faint:#8A8275;
+    --rule:#39342A;
+    --rule-soft:#2A251E;
+    --pen:#9CB7E2;
+    --pen-soft:#222A38;
+    --flag:#E49B73;
+    --flag-soft:#2E2119;
+    --ok:#83C4A4;
 }
 
 *,*::before,*::after{ box-sizing:border-box; }
 
+html{ scroll-behavior:smooth; }
+@media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } }
+
 body{
-    margin:0;
-    background:var(--paper);
-    color:var(--ink);
-    font-family:var(--sans);
-    font-size:16.5px;
-    line-height:1.65;
-    -webkit-font-smoothing:antialiased;
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--sans); font-size:16.5px; line-height:1.65;
+    -webkit-font-smoothing:antialiased; overflow-x:clip;
 }
 
-.bar{ position:sticky; top:0; z-index:40; background:var(--paper); border-bottom:1px solid var(--rule); }
-.bar-track{ height:3px; background:var(--rule-soft); }
-.bar-fill{ height:3px; width:0%; background:var(--pen); transition:width .3s ease; }
+/* ---------- the thin progress line ---------- */
+.bar{ position:sticky; top:0; z-index:60; background:var(--paper); border-bottom:1px solid var(--rule); }
+.bar-track{ height:2px; background:var(--rule-soft); }
+.bar-fill{ height:2px; width:0%; background:var(--pen); transition:width .35s ease; }
 @media (prefers-reduced-motion: reduce){ .bar-fill{ transition:none; } }
 .bar-row{
     display:flex; align-items:center; justify-content:space-between; gap:14px;
-    max-width:var(--measure); margin:0 auto; padding:10px var(--gutter);
-    font-family:var(--mono); font-size:12px; letter-spacing:.02em; color:var(--muted);
+    max-width:1180px; margin:0 auto; padding:9px var(--gutter);
+    font-family:var(--mono); font-size:11.5px; letter-spacing:.03em; color:var(--faint);
 }
 .bar-row b{ color:var(--ink); font-weight:500; }
 
-.wrap{ max-width:var(--measure); margin:0 auto; padding:0 var(--gutter) 60px; }
-
-header.top{ padding:clamp(44px,8vw,84px) 0 clamp(26px,4vw,40px); }
-.kicker{ font-family:var(--mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--pen); margin:0 0 18px; }
+/* ---------- hero ---------- */
+.hero{ border-bottom:1px solid var(--rule); }
+.hero-in{ max-width:1180px; margin:0 auto; padding:clamp(46px,7vw,88px) var(--gutter) clamp(34px,5vw,58px); }
+.kicker{
+    font-family:var(--mono); font-size:11.5px; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--pen); margin:0 0 20px;
+}
 h1{
     font-family:var(--serif); font-weight:500;
-    font-size:clamp(34px,7vw,52px); line-height:1.1; letter-spacing:-.015em;
-    margin:0 0 20px; text-wrap:balance;
+    font-size:clamp(34px,6.4vw,60px); line-height:1.06; letter-spacing:-.02em;
+    margin:0 0 24px; max-width:19ch; text-wrap:balance;
 }
-.lede{ font-family:var(--serif); font-size:clamp(18px,2.6vw,21px); line-height:1.6; color:var(--ink-2); margin:0 0 16px; }
+.lede{
+    font-family:var(--serif); font-size:clamp(18px,2.3vw,21px); line-height:1.6;
+    color:var(--ink-2); margin:0 0 15px; max-width:60ch;
+}
 .lede em{ font-style:italic; }
 
-.note{ border-left:2px solid var(--pen); background:var(--pen-soft); padding:16px 18px; margin:26px 0 0; font-size:14.5px; line-height:1.6; }
-.note.good{ border-left-color:var(--ok); background:var(--ok-soft); }
-.note p{ margin:0 0 9px; }
-.note p:last-child{ margin:0; }
-.note b{ font-weight:600; }
+/* Three facts in the mono voice: what it is, how long, what happens next. */
+.facts{
+    display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px;
+    background:var(--rule); border:1px solid var(--rule);
+    margin:clamp(30px,4vw,44px) 0 0; max-width:760px;
+}
+.fact{ background:var(--paper); padding:16px 18px; }
+.fact dt{
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--faint); margin:0 0 6px;
+}
+.fact dd{ margin:0; font-family:var(--serif); font-size:17px; line-height:1.4; color:var(--ink); }
+@media (max-width:680px){ .facts{ grid-template-columns:1fr; } }
 
-section{ padding:clamp(34px,5vw,52px) 0 8px; border-top:1px solid var(--rule); margin-top:clamp(30px,4vw,44px); }
-.sec-n{ font-family:var(--mono); font-size:12px; letter-spacing:.1em; color:var(--pen); display:block; margin:0 0 8px; }
+/* ---------- the two column body ---------- */
+.shell{
+    max-width:1180px; margin:0 auto; padding:0 var(--gutter) 40px;
+    display:grid; grid-template-columns:var(--rail) minmax(0,1fr); gap:clamp(28px,5vw,72px);
+    align-items:start;
+}
+@media (max-width:940px){ .shell{ grid-template-columns:1fr; gap:0; } }
+
+/* ---------- index rail ---------- */
+.index{ position:sticky; top:64px; padding:clamp(30px,4vw,48px) 0 0; }
+.index-h{
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--faint); margin:0 0 14px;
+}
+.index ol{ list-style:none; margin:0; padding:0; }
+.index li{ margin:0; }
+.index a{
+    display:grid; grid-template-columns:16px 1fr; gap:10px; align-items:baseline;
+    padding:6px 0; text-decoration:none; color:var(--muted);
+    font-size:14px; line-height:1.35; border-left:2px solid transparent; padding-left:12px;
+    transition:color .15s ease, border-color .15s ease;
+}
+.index a:hover{ color:var(--ink); }
+.index a:focus-visible{ outline:2px solid var(--pen); outline-offset:2px; }
+.index a[aria-current="true"]{ color:var(--ink); border-left-color:var(--pen); }
+.index .ix-n{ font-family:var(--mono); font-size:11px; color:var(--faint); }
+.index a[aria-current="true"] .ix-n{ color:var(--pen); }
+
+/* State marker. Empty ring = untouched, half = started, solid = every
+   question in that section answered. */
+.ix-dot{
+    grid-column:1; width:9px; height:9px; border-radius:50%;
+    border:1.5px solid var(--rule); align-self:center; position:relative;
+}
+.ix-part .ix-dot{ border-color:var(--pen); }
+.ix-part .ix-dot::after{
+    content:""; position:absolute; inset:1px; border-radius:50%;
+    background:linear-gradient(to right, var(--pen) 50%, transparent 50%);
+}
+.ix-done .ix-dot{ border-color:var(--ok); background:var(--ok); }
+.index .ix-key{
+    font-family:var(--mono); font-size:10.5px; color:var(--faint);
+    margin:18px 0 0; padding-top:14px; border-top:1px solid var(--rule-soft); line-height:1.7;
+}
+
+/* Mobile: the rail becomes a jump list you open, not a sticky column. */
+.jump{ display:none; margin:26px 0 0; border:1px solid var(--rule); background:var(--card); }
+.jump summary{
+    font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase;
+    padding:13px 16px; cursor:pointer; color:var(--pen); list-style:none;
+}
+.jump summary::-webkit-details-marker{ display:none; }
+.jump summary::after{ content:" ↓"; }
+.jump[open] summary::after{ content:" ↑"; }
+.jump .index{ position:static; padding:0 16px 14px; }
+.jump .index-h{ display:none; }
+@media (max-width:940px){
+    .index-desk{ display:none; }
+    .jump{ display:block; }
+}
+
+/* ---------- sections ---------- */
+.qs{ padding-top:clamp(30px,4vw,48px); }
+section{ scroll-margin-top:72px; padding:0 0 clamp(40px,6vw,72px); }
+.sec-head{ border-top:2px solid var(--ink); padding-top:16px; margin:0 0 4px; }
+.sec-n{
+    font-family:var(--mono); font-size:11px; letter-spacing:.14em;
+    color:var(--pen); display:block; margin:0 0 10px;
+}
 h2{
     font-family:var(--serif); font-weight:500;
-    font-size:clamp(24px,4.4vw,32px); line-height:1.2; letter-spacing:-.01em;
-    margin:0 0 10px; text-wrap:balance;
+    font-size:clamp(25px,3.6vw,34px); line-height:1.15; letter-spacing:-.015em;
+    margin:0 0 10px; max-width:22ch; text-wrap:balance;
 }
-.sec-sub{ color:var(--muted); font-size:15px; margin:0 0 8px; max-width:56ch; }
+.sec-sub{ color:var(--muted); font-size:15px; margin:0; max-width:56ch; }
 
-.f{ margin:30px 0 0; }
-.q{ font-family:var(--serif); font-size:19px; line-height:1.45; display:block; margin:0 0 5px; color:var(--ink); }
+/* The two sections that actually carry the site are marked as such. */
+section.key .sec-head{ border-top-color:var(--pen); }
+.spend{
+    display:inline-block; font-family:var(--mono); font-size:10px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--pen); border:1px solid var(--pen);
+    padding:3px 8px; border-radius:2px; margin:0 0 12px;
+}
+
+/* ---------- fields ---------- */
+.f{ margin:28px 0 0; max-width:62ch; }
+.q{ font-family:var(--serif); font-size:19.5px; line-height:1.4; display:block; margin:0 0 6px; color:var(--ink); }
 .q em{ font-style:italic; }
-.hint{ font-family:var(--mono); font-size:12.5px; line-height:1.55; color:var(--muted); margin:0 0 10px; max-width:58ch; }
-.hint.flag{ color:var(--flag); }
+.hint{ font-family:var(--mono); font-size:12.5px; line-height:1.6; color:var(--muted); margin:0 0 11px; }
+.hint.flag{ color:var(--flag); background:var(--flag-soft); padding:9px 11px; border-radius:2px; }
 
 .tag{
-    font-family:var(--mono); font-size:10.5px; letter-spacing:.09em; text-transform:uppercase;
-    vertical-align:2px; margin-left:8px; padding:2px 6px;
-    border:1px solid var(--rule); border-radius:2px; color:var(--muted); white-space:nowrap;
+    font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+    vertical-align:3px; margin-left:9px; padding:2px 6px;
+    border:1px solid var(--rule); border-radius:2px; color:var(--faint); white-space:nowrap;
 }
 .tag.req{ color:var(--pen); border-color:var(--pen); }
 
 input[type=text], input[type=email], input[type=url], input[type=tel], textarea{
     width:100%; display:block;
     font-family:var(--sans); font-size:16.5px; line-height:1.6; color:var(--ink);
-    background:var(--card); border:1px solid var(--rule); border-radius:3px; padding:11px 13px;
+    background:var(--card); border:1px solid var(--rule); border-radius:2px;
+    padding:12px 14px;
     transition:border-color .15s ease, box-shadow .15s ease;
 }
 @media (prefers-reduced-motion: reduce){ input, textarea{ transition:none; } }
-textarea{ min-height:104px; resize:vertical; }
-textarea.tall{ min-height:170px; }
-input:focus-visible, textarea:focus-visible{ outline:none; border-color:var(--pen); box-shadow:0 0 0 3px var(--pen-soft); }
-input:hover, textarea:hover{ border-color:var(--muted); }
+textarea{ min-height:110px; resize:vertical; }
+textarea.tall{ min-height:180px; }
+input:hover, textarea:hover{ border-color:var(--faint); }
+input:focus-visible, textarea:focus-visible{
+    outline:none; border-color:var(--pen); box-shadow:0 0 0 3px var(--pen-soft);
+}
 .filled{ border-left:2px solid var(--ok); }
 
-.grid2{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.grid2{ display:grid; grid-template-columns:1fr 1fr; gap:20px; max-width:62ch; }
 @media (max-width:620px){ .grid2{ grid-template-columns:1fr; } }
 
-.actions{
-    position:sticky; bottom:0; z-index:40;
-    background:var(--paper); border-top:1px solid var(--rule);
-    padding:14px var(--gutter) calc(14px + env(safe-area-inset-bottom,0px));
-    margin:clamp(40px,6vw,64px) calc(var(--gutter) * -1) 0;
+/* ---------- the photographs panel ---------- */
+.drop{
+    margin:28px 0 0; padding:20px 22px; max-width:62ch;
+    border:1px solid var(--pen); border-left-width:3px; background:var(--pen-soft);
 }
-.actions-in{ max-width:var(--measure); margin:0 auto; display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
-button{
+.drop-h{ font-family:var(--serif); font-size:21px; margin:0 0 8px; color:var(--ink); }
+.drop-p{ font-family:var(--mono); font-size:12.5px; line-height:1.65; color:var(--ink-2); margin:0 0 12px; }
+.drop p:last-child{ margin:0; }
+
+/* ---------- closing panel ---------- */
+.finish{ max-width:62ch; margin:0 0 40px; border:2px solid var(--ink); padding:clamp(22px,3vw,32px); }
+.finish h2{ margin:0 0 10px; }
+.finish p{ margin:0 0 18px; color:var(--muted); font-size:15px; }
+.row{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+button, .btn{
     font-family:var(--mono); font-size:13px; letter-spacing:.03em;
-    padding:11px 17px; border-radius:3px; cursor:pointer;
-    border:1px solid var(--pen); background:var(--pen); color:#fff;
+    padding:12px 18px; border-radius:2px; cursor:pointer; text-decoration:none;
+    display:inline-block; border:1px solid var(--pen); background:var(--pen); color:#fff;
     transition:background .15s ease, color .15s ease, transform .1s ease;
 }
-button.ghost{ background:transparent; color:var(--pen); }
-button[disabled]{ opacity:.5; cursor:not-allowed; }
-button:hover:not([disabled]){ transform:translateY(-1px); }
-button.ghost:hover:not([disabled]){ background:var(--pen-soft); }
-button:focus-visible{ outline:2px solid var(--ink); outline-offset:2px; }
-@media (prefers-reduced-motion: reduce){ button:hover{ transform:none; } }
-.say{ font-family:var(--mono); font-size:12.5px; color:var(--muted); flex:1 1 100%; margin:2px 0 0; min-height:18px; }
+button.ghost, .btn.ghost{ background:transparent; color:var(--pen); }
+button:hover, .btn:hover{ transform:translateY(-1px); }
+button.ghost:hover, .btn.ghost:hover{ background:var(--pen-soft); }
+button:focus-visible, .btn:focus-visible{ outline:2px solid var(--ink); outline-offset:2px; }
+@media (prefers-reduced-motion: reduce){ button:hover, .btn:hover{ transform:none; } }
+.say{ font-family:var(--mono); font-size:12.5px; color:var(--muted); flex:1 1 100%; margin:4px 0 0; min-height:18px; }
 .say.good{ color:var(--ok); }
 .say.bad{ color:var(--flag); }
 
-.ans{ margin:26px 0 0; padding:0 0 20px; border-bottom:1px solid var(--rule-soft); }
-.ans-q{ font-family:var(--mono); font-size:12px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); margin:0 0 6px; }
-.ans-a{ font-family:var(--serif); font-size:18px; line-height:1.55; margin:0; white-space:pre-wrap; }
-.ans-a.empty{ color:var(--muted); font-style:italic; }
-
-footer.end{ margin-top:34px; padding-top:22px; border-top:1px solid var(--rule); font-family:var(--mono); font-size:12px; line-height:1.7; color:var(--muted); }
-
-.boot{ max-width:var(--measure); margin:0 auto; padding:60px var(--gutter); font-family:var(--serif); font-size:20px; color:var(--muted); }
-
-/* A link styled as a button: the download and the upload folder are both
-   navigations, not form controls, so they stay anchors for keyboard and
-   right-click behaviour and borrow the button's look. */
-.dlbtn{
-    display:inline-block; font-family:var(--mono); font-size:13px; letter-spacing:.03em;
-    padding:11px 17px; border-radius:3px; text-decoration:none;
-    border:1px solid var(--pen); background:transparent; color:var(--pen);
-    transition:background .15s ease, transform .1s ease;
+/* A compact copy pill that only appears once there is something to copy. */
+.pill{
+    position:fixed; right:clamp(14px,3vw,26px); bottom:clamp(14px,3vw,26px); z-index:70;
+    box-shadow:0 6px 22px rgba(0,0,0,.16); opacity:0; pointer-events:none;
+    transform:translateY(8px); transition:opacity .2s ease, transform .2s ease;
 }
-.dlbtn:hover{ background:var(--pen-soft); transform:translateY(-1px); }
-.dlbtn:focus-visible{ outline:2px solid var(--ink); outline-offset:2px; }
-@media (prefers-reduced-motion: reduce){ .dlbtn:hover{ transform:none; } }
+.pill.on{ opacity:1; pointer-events:auto; transform:translateY(0); }
+@media (prefers-reduced-motion: reduce){ .pill{ transition:none; } }
 
-.drop{
-    margin:26px 0 0; padding:20px 22px;
-    border:1px dashed var(--pen); border-radius:4px; background:var(--pen-soft);
+footer.end{
+    max-width:1180px; margin:0 auto; padding:26px var(--gutter) 60px;
+    border-top:1px solid var(--rule);
+    font-family:var(--mono); font-size:11.5px; line-height:1.8; color:var(--faint);
 }
-.drop-h{ font-family:var(--serif); font-size:20px; margin:0 0 6px; color:var(--ink); }
-.drop-p{ font-family:var(--mono); font-size:12.5px; line-height:1.6; color:var(--muted); margin:0 0 14px; max-width:58ch; }
-.drop-a{ background:var(--pen); color:#fff; border-color:var(--pen); }
-.drop-a:hover{ background:var(--ink); border-color:var(--ink); color:#fff; }
-.drop p:last-child{ margin:0; }
+footer.end button{ margin-top:8px; }
+
+.boot{ max-width:60ch; margin:0 auto; padding:70px var(--gutter); font-family:var(--serif); font-size:20px; color:var(--muted); }
 </style>
 
 <div id="app"><p class="boot">Loading the questionnaire&hellip; if this message stays, JavaScript is switched off in this browser.</p></div>
@@ -297,7 +391,9 @@ footer.end{ margin-top:34px; padding-top:22px; border-top:1px solid var(--rule);
       { id:'like',   q:'Is there a website whose feel you like?', area:true, hint:'Any site at all, in any industry. Paste the address and say what you like about it. One line is enough.' },
       { id:'else',   q:'Anything I didn’t ask?', area:true, tall:true, hint:'This box is where the best material usually turns up.' }
     ]}
-  ];
+  ]
+  /* Sections worth spending real time on. Marked, not hidden. */
+  var KEY_SECTIONS = { '08':1, '09':1 };
 
   var ALL = [];
   SECTIONS.forEach(function(s){ s.fields.forEach(function(f){ ALL.push(f); }); });
@@ -326,33 +422,40 @@ footer.end{ margin-top:34px; padding-top:22px; border-top:1px solid var(--rule);
     try { return JSON.parse(raw) || {}; } catch (e) { return {}; }
   }
 
-  /* ---------- views ---------- */
+  /* ---------- view ---------- */
   function render(){
-    renderForm();
-    window.scrollTo(0,0);
-  }
-
-  function renderForm(){
     var seed = loadDraft();
     var h = '';
 
     h += '<div class="bar"><div class="bar-track"><div class="bar-fill" id="fill"></div></div>'
-       + '<div class="bar-row"><span><b id="done">0</b> of <b id="total">' + ALL.length + '</b> answered</span>'
+       + '<div class="bar-row"><span><b id="done">0</b> of <b>' + ALL.length + '</b> answered</span>'
        + '<span id="saved">saved on this device</span></div></div>';
 
-    h += '<div class="wrap"><header class="top">'
+    h += '<header class="hero"><div class="hero-in">'
        + '<p class="kicker">Rana Tahir Bilal &middot; Website intake</p>'
        + '<h1>Before I build your site, I need to hear it from you.</h1>'
-       + '<p class="lede">There is very little about you online, which is a good problem &mdash; it means the site will be the first proper account of your work rather than a rehash of someone else\u2019s. But it means I cannot write a word of it until you tell me.</p>'
+       + '<p class="lede">There is very little about you online, which is a good problem: the site will be the first proper account of your work rather than a rehash of someone else’s. But it means I cannot write a word of it until you tell me.</p>'
        + '<p class="lede">Answer in whatever voice you actually speak in. <em>Fragments are fine. Long is better than short.</em> I will do the shaping.</p>'
-       + '<div class="note">'
-       + '<p><b>How this works.</b> Answer as much as you can, then press <b>Copy everything</b> at the bottom and paste it into a reply to my email. Your answers save in this browser as you type, so you can close the page and come back to it.</p>'
-       + '<p><b>What I will and will not do.</b> I publish only what you confirm here. I do not invent awards, dates, titles, quotes, publications or employment history, and I do not round anything up. If a detail is missing I will ask you again rather than guess.</p>'
+       + '<dl class="facts">'
+       + '<div class="fact"><dt>How long</dt><dd>About forty minutes, in as many sittings as you like.</dd></div>'
+       + '<div class="fact"><dt>Saving</dt><dd>Every answer is kept in this browser as you type.</dd></div>'
+       + '<div class="fact"><dt>Sending</dt><dd>Press Copy at the end and paste it into a reply to my email.</dd></div>'
+       + '</dl>'
+       + '<details class="jump"><summary>Jump to a section</summary>' + indexHTML('m') + '</details>'
        + '</div></header>';
 
+    h += '<div class="shell">'
+       + '<nav class="index index-desk" aria-label="Sections">' + indexHTML('d') + '</nav>'
+       + '<div class="qs">';
+
     SECTIONS.forEach(function(s){
-      h += '<section><span class="sec-n">' + s.n + '</span><h2>' + s.t + '</h2>';
-      if (s.sub) { h += '<p class="sec-sub">' + s.sub + '</p>'; }
+      var isKey = !!KEY_SECTIONS[s.n];
+      h += '<section id="s' + s.n + '"' + (isKey ? ' class="key"' : '') + '>'
+         + '<div class="sec-head"><span class="sec-n">' + s.n + ' / ' + SECTIONS.length + '</span>'
+         + (isKey ? '<span class="spend">Worth the time</span>' : '')
+         + '<h2>' + s.t + '</h2>'
+         + (s.sub ? '<p class="sec-sub">' + s.sub + '</p>' : '')
+         + '</div>';
       if (s.blurb) { h += s.blurb(); }
       var i = 0;
       while (i < s.fields.length) {
@@ -365,19 +468,37 @@ footer.end{ margin-top:34px; padding-top:22px; border-top:1px solid var(--rule);
       h += '</section>';
     });
 
-    h += '<div class="actions"><div class="actions-in">'
+    h += '<div class="finish"><h2>That is everything.</h2>'
+       + '<p>Press Copy, then paste it straight into a reply to my email. If anything is still blank, send it anyway and I will ask.</p>'
+       + '<div class="row">'
        + '<button id="copy" type="button">Copy everything</button>'
-       + '<a id="dl" class="dlbtn" download="website-intake.txt" href="#">Save as a file</a>'
+       + '<a id="dl" class="btn ghost" download="website-intake.txt" href="#">Save as a file</a>'
        + '<p class="say" id="say" role="status" aria-live="polite"></p>'
        + '</div></div>';
 
+    h += '</div></div>';
+
     h += '<footer class="end">'
        + '<p>Your answers exist only in this browser on this device. Nothing is sent anywhere until you copy them and send them yourself. Clearing your browser data will clear them.</p>'
+       + '<p>Rana Tahir Bilal &middot; Website intake</p>'
        + '<p><button id="clear" class="ghost" type="button">Clear the draft</button></p>'
-       + '<p>Rana Tahir Bilal &middot; Website intake</p></footer></div>';
+       + '</footer>';
+
+    h += '<button id="pill" class="pill" type="button">Copy everything</button>';
 
     app.innerHTML = h;
-    wireForm();
+    wire();
+  }
+
+  function indexHTML(scope){
+    var h = '<p class="index-h">The sections</p><ol>';
+    SECTIONS.forEach(function(s){
+      h += '<li id="ix-' + scope + '-' + s.n + '"><a href="#s' + s.n + '">'
+         + '<span class="ix-dot" aria-hidden="true"></span>'
+         + '<span><span class="ix-n">' + s.n + '</span> ' + esc(stripTags(s.t)) + '</span></a></li>';
+    });
+    h += '</ol><p class="ix-key">Ring, part filled, solid.<br>Nothing here is compulsory.</p>';
+    return h;
   }
 
   function field(f, seed){
@@ -392,7 +513,7 @@ footer.end{ margin-top:34px; padding-top:22px; border-top:1px solid var(--rule);
       + control + '</div>';
   }
 
-  /* ---------- form behaviour ---------- */
+  /* ---------- behaviour ---------- */
   function collect(){
     var out = {};
     ALL.forEach(function(f){
@@ -402,22 +523,32 @@ footer.end{ margin-top:34px; padding-top:22px; border-top:1px solid var(--rule);
     return out;
   }
 
-  function wireForm(){
+  function wire(){
     var fill = document.getElementById('fill');
     var doneEl = document.getElementById('done');
     var savedEl = document.getElementById('saved');
+    var pill = document.getElementById('pill');
 
     function progress(){
-      var n = 0;
-      ALL.forEach(function(f){
-        var el = document.getElementById('f_' + f.id);
-        if (!el) { return; }
-        var has = el.value.trim().length > 0;
-        if (has) { n++; }
-        el.classList.toggle('filled', has);
+      var total = 0;
+      SECTIONS.forEach(function(s){
+        var n = 0;
+        s.fields.forEach(function(f){
+          var el = document.getElementById('f_' + f.id);
+          if (!el) { return; }
+          var has = el.value.trim().length > 0;
+          if (has) { n++; total++; }
+          el.classList.toggle('filled', has);
+        });
+        var state = n === 0 ? '' : (n === s.fields.length ? 'ix-done' : 'ix-part');
+        ['d','m'].forEach(function(scope){
+          var li = document.getElementById('ix-' + scope + '-' + s.n);
+          if (li) { li.className = state; }
+        });
       });
-      doneEl.textContent = n;
-      fill.style.width = (ALL.length ? (n / ALL.length) * 100 : 0) + '%';
+      doneEl.textContent = total;
+      fill.style.width = (ALL.length ? (total / ALL.length) * 100 : 0) + '%';
+      pill.classList.toggle('on', total > 0);
     }
 
     ALL.forEach(function(f){
@@ -427,18 +558,17 @@ footer.end{ margin-top:34px; padding-top:22px; border-top:1px solid var(--rule);
         progress();
         window.clearTimeout(saveTimer);
         saveTimer = window.setTimeout(function(){
-          /* If the form has already been replaced — she pressed Send inside
-             the debounce window — collect() would find no fields and write an
-             empty draft over her real answers. Bail instead. */
+          /* Guard against writing an empty draft if the form has gone away. */
           if (!document.getElementById('f_name')) { return; }
           savedEl.textContent = set(DRAFT_KEY, JSON.stringify(collect()))
-            ? 'saved on this device' : 'not saved \u2014 copy before you close';
+            ? 'saved on this device' : 'not saved — copy before you close';
         }, 400);
       });
     });
 
     progress();
-    wireExport(function(){ return transcript(collect()); });
+    wireCopy();
+    wireIndex();
 
     document.getElementById('clear').addEventListener('click', function(){
       if (!window.confirm('Clear every answer on this device? This cannot be undone.')) { return; }
@@ -452,40 +582,79 @@ footer.end{ margin-top:34px; padding-top:22px; border-top:1px solid var(--rule);
     });
   }
 
-  function wireExport(getText){
-    var copy = document.getElementById('copy');
-    if (copy) {
-      copy.addEventListener('click', function(){
-        var text = getText();
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text)
-            .then(function(){ tell('Copied to your clipboard.', 'good'); })
-            .catch(function(){ fallbackCopy(text); });
-        } else { fallbackCopy(text); }
+  /* Highlights whichever section is currently on screen. Falls back to no
+     highlight at all where IntersectionObserver is missing, which costs
+     nothing: the links still work. */
+  function wireIndex(){
+    if (!('IntersectionObserver' in window)) { return; }
+    var current = null;
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (!e.isIntersecting) { return; }
+        var n = e.target.id.slice(1);
+        if (n === current) { return; }
+        current = n;
+        /* Clear once, then mark both rails. Clearing inside the loop wiped
+           the desktop mark again on the mobile pass, so nothing was ever
+           highlighted on the rail people actually see. */
+        var list = document.querySelectorAll('.index a[aria-current]');
+        Array.prototype.forEach.call(list, function(a){ a.removeAttribute('aria-current'); });
+        ['d','m'].forEach(function(scope){
+          var li = document.getElementById('ix-' + scope + '-' + n);
+          if (li) { li.querySelector('a').setAttribute('aria-current','true'); }
+        });
+      });
+    }, { rootMargin: '-72px 0px -55% 0px', threshold: 0 });
+    SECTIONS.forEach(function(s){
+      var el = document.getElementById('s' + s.n);
+      if (el) { io.observe(el); }
+    });
+    /* Tapping a link in the mobile jump list should close it again. */
+    var jump = document.querySelector('.jump');
+    if (jump) {
+      jump.addEventListener('click', function(e){
+        if (e.target.closest('a')) { jump.removeAttribute('open'); }
       });
     }
+  }
+
+  function wireCopy(){
+    function text(){ return transcript(collect()); }
+
+    function doCopy(){
+      var t = text();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(t)
+          .then(function(){ tell('Copied. Now paste it into a reply to my email.', 'good'); })
+          .catch(function(){ fallbackCopy(t); });
+      } else { fallbackCopy(t); }
+    }
+
+    document.getElementById('copy').addEventListener('click', doCopy);
+    document.getElementById('pill').addEventListener('click', function(){
+      document.getElementById('copy').scrollIntoView({ block:'center' });
+      doCopy();
+    });
+
     var dl = document.getElementById('dl');
-    if (dl) {
-      dl.addEventListener('click', function(){
-        /* Built at click time so the file always holds the latest answers. */
-        var nm = (nameNow() || 'intake').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-|-$/g,'') || 'intake';
-        var blob = new Blob([getText()], { type:'text/plain;charset=utf-8' });
-        dl.href = URL.createObjectURL(blob);
-        dl.download = nm + '-website-intake.txt';
-        tell('Saved to your downloads.', 'good');
-      });
-    }
+    dl.addEventListener('click', function(){
+      /* Built at click time so the file always holds the latest answers. */
+      var nm = (nameNow() || 'intake').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-|-$/g,'') || 'intake';
+      var blob = new Blob([text()], { type:'text/plain;charset=utf-8' });
+      dl.href = URL.createObjectURL(blob);
+      dl.download = nm + '-website-intake.txt';
+      tell('Saved to your downloads.', 'good');
+    });
   }
 
   function nameNow(){
     var el = document.getElementById('f_name');
-    if (el) { return el.value.trim(); }
-    return (loadDraft().name || '');
+    return el ? el.value.trim() : (loadDraft().name || '');
   }
 
-  function fallbackCopy(text){
+  function fallbackCopy(t){
     var ta = document.createElement('textarea');
-    ta.value = text;
+    ta.value = t;
     ta.setAttribute('readonly','');
     ta.style.position = 'fixed';
     ta.style.left = '-9999px';
@@ -494,14 +663,15 @@ footer.end{ margin-top:34px; padding-top:22px; border-top:1px solid var(--rule);
     var ok = false;
     try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
     document.body.removeChild(ta);
-    tell(ok ? 'Copied to your clipboard.' : 'Copying was blocked by this browser. Use \u201cSave as a file\u201d instead.', ok ? 'good' : 'bad');
+    tell(ok ? 'Copied. Now paste it into a reply to my email.'
+            : 'Copying was blocked by this browser. Use “Save as a file” instead.', ok ? 'good' : 'bad');
   }
 
   function transcript(answers){
-    var out = ['WEBSITE INTAKE' + (answers.name ? ' \u2014 ' + answers.name : ''), ''];
+    var out = ['WEBSITE INTAKE' + (answers.name ? ' — ' + answers.name : ''), ''];
     SECTIONS.forEach(function(s){
       out.push('');
-      out.push('== ' + s.t.toUpperCase() + ' ==');
+      out.push('== ' + stripTags(s.t).toUpperCase() + ' ==');
       s.fields.forEach(function(f){
         out.push('');
         out.push(stripTags(f.q));
