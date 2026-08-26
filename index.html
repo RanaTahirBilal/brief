@@ -1,299 +1,346 @@
 <title>Before I Build Your Site</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;450;500&display=swap">
 
 <style id="app-css">
 /* ==========================================================
-   INTAKE QUESTIONNAIRE
-   A manuscript, not a form. Questions sit in a bookish serif
-   because they are somebody asking; answers in a plain sans
-   because they are somebody writing; the marginal notes in
-   mono because they are mine, not hers.
+   THE BRIEF — client intake
+   Set as a bound document, not a web form: front matter, a
+   contents page, numbered sections, a colophon, and a print
+   sheet she can fill in by hand. The restraint is the point;
+   everything here is a rule, a counter or a piece of type.
 
-   The index rail is the design. Forty three questions in one
-   scroll reads as a wall; the same forty three with a visible
-   map, a per-section state and a way to jump reads as work you
-   can start and put down. The rail's markers encode real state
-   (untouched / part done / done), never decoration.
+   Newsreader is a variable face with an optical size axis.
+   The masthead is set at opsz 72 where the face turns high
+   contrast and narrow; the questions at opsz 20 where it
+   stays open and readable. Same family, two different voices.
    ========================================================== */
 
 :root{
-    --paper:#F7F4EE;
-    --card:#FFFDF9;
-    --ink:#23201C;
-    --ink-2:#3D3830;
-    --muted:#6B655C;
-    /* 8C8478 read at 3.36:1 on paper, which fails AA for the small mono
-       labels this drives. 736B5E clears it at 4.79:1. */
-    --faint:#736B5E;
-    --rule:#DDD6C9;
-    --rule-soft:#EAE4D9;
-    --pen:#2E4A7D;
-    --pen-soft:#E4EAF4;
-    --flag:#9C4221;
-    --flag-soft:#F6E7DE;
-    --ok:#2F6B4F;
+    /* Surfaces: the page is a desk, the inputs are sheets on it. */
+    --desk:#F3F1EC;
+    --sheet:#FFFFFF;
+    --ink:#14130F;
+    --ink-2:#3A362E;
+    --muted:#5E594F;
+    --faint:#736D61;
+    --rule:#D9D4C8;
+    --rule-fine:#E7E2D7;
+
+    --accent:#1F3D6B;
+    --accent-soft:#E7ECF4;
+    --flag:#8A3B18;
+    --flag-soft:#F7EAE1;
+    --ok:#2C6248;
+
+    /* One type scale, used everywhere. */
+    --s-xs:11px;
+    --s-sm:12.5px;
+    --s-md:15px;
+    --s-base:16.5px;
+    --s-lg:19.5px;
+    --s-xl:clamp(24px,3.4vw,32px);
+    --s-2xl:clamp(34px,6.6vw,64px);
+
+    /* One spacing scale. */
+    --sp-1:6px; --sp-2:12px; --sp-3:20px; --sp-4:32px;
+    --sp-5:clamp(36px,5vw,56px); --sp-6:clamp(52px,8vw,96px);
 
     --serif:'Newsreader',Georgia,'Times New Roman',serif;
     --sans:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
     --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
 
-    --gutter:clamp(18px,4vw,44px);
-    --rail:236px;
+    --page:1200px;
+    --gutter:clamp(20px,4.5vw,52px);
+    --rail:220px;
 }
 
 @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-        --paper:#16140F;
-        --card:#1E1B15;
-        --ink:#F0EBE0;
-        --ink-2:#D6CFC2;
-        --muted:#A29A8C;
-        --faint:#8A8275;
-        --rule:#39342A;
-        --rule-soft:#2A251E;
-        --pen:#9CB7E2;
-        --pen-soft:#222A38;
-        --flag:#E49B73;
-        --flag-soft:#2E2119;
-        --ok:#83C4A4;
+        --desk:#131210;
+        --sheet:#1C1A16;
+        --ink:#F2EEE5;
+        --ink-2:#D6D0C4;
+        --muted:#A9A294;
+        --faint:#918A7C;
+        --rule:#35312A;
+        --rule-fine:#28241E;
+        --accent:#A8C0E4;
+        --accent-soft:#1E2532;
+        --flag:#DE9A72;
+        --flag-soft:#2B1F17;
+        --ok:#7FBF9C;
     }
 }
 :root[data-theme="dark"]{
-    --paper:#16140F;
-    --card:#1E1B15;
-    --ink:#F0EBE0;
-    --ink-2:#D6CFC2;
-    --muted:#A29A8C;
-    --faint:#8A8275;
-    --rule:#39342A;
-    --rule-soft:#2A251E;
-    --pen:#9CB7E2;
-    --pen-soft:#222A38;
-    --flag:#E49B73;
-    --flag-soft:#2E2119;
-    --ok:#83C4A4;
+    --desk:#131210;
+    --sheet:#1C1A16;
+    --ink:#F2EEE5;
+    --ink-2:#D6D0C4;
+    --muted:#A9A294;
+    --faint:#918A7C;
+    --rule:#35312A;
+    --rule-fine:#28241E;
+    --accent:#A8C0E4;
+    --accent-soft:#1E2532;
+    --flag:#DE9A72;
+    --flag-soft:#2B1F17;
+    --ok:#7FBF9C;
 }
 
 *,*::before,*::after{ box-sizing:border-box; }
-
 html{ scroll-behavior:smooth; }
 @media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } }
 
 body{
-    margin:0; background:var(--paper); color:var(--ink);
-    font-family:var(--sans); font-size:16.5px; line-height:1.65;
+    margin:0; background:var(--desk); color:var(--ink);
+    font-family:var(--sans); font-size:var(--s-base); line-height:1.65;
+    font-variant-numeric:tabular-nums;
     -webkit-font-smoothing:antialiased; overflow-x:clip;
 }
 
-/* ---------- the thin progress line ---------- */
-.bar{ position:sticky; top:0; z-index:60; background:var(--paper); border-bottom:1px solid var(--rule); }
-.bar-track{ height:2px; background:var(--rule-soft); }
-.bar-fill{ height:2px; width:0%; background:var(--pen); transition:width .35s ease; }
-@media (prefers-reduced-motion: reduce){ .bar-fill{ transition:none; } }
-.bar-row{
-    display:flex; align-items:center; justify-content:space-between; gap:14px;
-    max-width:1180px; margin:0 auto; padding:9px var(--gutter);
-    font-family:var(--mono); font-size:11.5px; letter-spacing:.03em; color:var(--faint);
-}
-.bar-row b{ color:var(--ink); font-weight:500; }
+.page{ max-width:var(--page); margin:0 auto; padding:0 var(--gutter); }
 
-/* ---------- hero ---------- */
-.hero{ border-bottom:1px solid var(--rule); }
-.hero-in{ max-width:1180px; margin:0 auto; padding:clamp(46px,7vw,88px) var(--gutter) clamp(34px,5vw,58px); }
-.kicker{
-    font-family:var(--mono); font-size:11.5px; letter-spacing:.16em;
-    text-transform:uppercase; color:var(--pen); margin:0 0 20px;
+/* Every uppercase label in the document, one class. */
+.label{
+    font-family:var(--mono); font-size:var(--s-xs); font-weight:500;
+    letter-spacing:.16em; text-transform:uppercase; color:var(--faint);
+}
+
+/* ---------- running head ---------- */
+.head{
+    position:sticky; top:0; z-index:60;
+    background:var(--desk); border-bottom:1px solid var(--rule);
+}
+.head-track{ height:2px; background:var(--rule-fine); }
+.head-fill{ height:2px; width:0%; background:var(--accent); transition:width .4s ease; }
+@media (prefers-reduced-motion: reduce){ .head-fill{ transition:none; } }
+.head-row{
+    display:flex; align-items:baseline; justify-content:space-between; gap:var(--sp-3);
+    max-width:var(--page); margin:0 auto; padding:10px var(--gutter);
+}
+.head-row b{ color:var(--ink); font-weight:500; }
+
+/* ---------- front matter ---------- */
+.cover{ padding:var(--sp-6) 0 var(--sp-5); }
+.masthead{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:var(--sp-3); flex-wrap:wrap;
+    border-bottom:1px solid var(--ink); padding-bottom:var(--sp-2); margin-bottom:var(--sp-5);
 }
 h1{
-    font-family:var(--serif); font-weight:500;
-    font-size:clamp(34px,6.4vw,60px); line-height:1.06; letter-spacing:-.02em;
-    margin:0 0 24px; max-width:19ch; text-wrap:balance;
+    font-family:var(--serif); font-weight:300;
+    font-variation-settings:'opsz' 72;
+    font-size:var(--s-2xl); line-height:1.02; letter-spacing:-.025em;
+    margin:0 0 var(--sp-4); max-width:16ch; text-wrap:balance;
 }
-.lede{
-    font-family:var(--serif); font-size:clamp(18px,2.3vw,21px); line-height:1.6;
-    color:var(--ink-2); margin:0 0 15px; max-width:60ch;
+.standfirst{
+    font-family:var(--serif); font-variation-settings:'opsz' 28;
+    font-size:clamp(18px,2.2vw,22px); line-height:1.55; color:var(--ink-2);
+    margin:0 0 var(--sp-2); max-width:56ch;
 }
-.lede em{ font-style:italic; }
+.standfirst em{ font-style:italic; }
 
-/* Three facts in the mono voice: what it is, how long, what happens next. */
-.facts{
-    display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px;
-    background:var(--rule); border:1px solid var(--rule);
-    margin:clamp(30px,4vw,44px) 0 0; max-width:760px;
+/* The spec table: front matter of a real document. */
+.spec{ margin:var(--sp-5) 0 0; border-top:1px solid var(--rule); max-width:560px; }
+.spec div{
+    display:grid; grid-template-columns:130px 1fr; gap:var(--sp-3);
+    padding:11px 0; border-bottom:1px solid var(--rule-fine);
 }
-.fact{ background:var(--paper); padding:16px 18px; }
-.fact dt{
-    font-family:var(--mono); font-size:10.5px; letter-spacing:.12em;
-    text-transform:uppercase; color:var(--faint); margin:0 0 6px;
-}
-.fact dd{ margin:0; font-family:var(--serif); font-size:17px; line-height:1.4; color:var(--ink); }
-@media (max-width:680px){ .facts{ grid-template-columns:1fr; } }
+.spec dt{ margin:0; }
+.spec dd{ margin:0; font-size:var(--s-md); color:var(--ink); }
 
-/* ---------- the two column body ---------- */
+/* ---------- contents ---------- */
+.contents{ padding:var(--sp-5) 0 var(--sp-6); border-top:1px solid var(--rule); }
+.contents-h{ margin:0 0 var(--sp-3); }
+.toc{ list-style:none; margin:0; padding:0; max-width:640px; }
+.toc li{ border-bottom:1px solid var(--rule-fine); }
+.toc a{
+    display:grid; grid-template-columns:34px 1fr auto; gap:var(--sp-2); align-items:baseline;
+    padding:11px 0; text-decoration:none; color:var(--ink);
+}
+.toc a:hover .toc-t{ text-decoration:underline; text-underline-offset:3px; }
+.toc a:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+.toc-n{ font-family:var(--mono); font-size:var(--s-sm); color:var(--faint); }
+.toc-t{ font-family:var(--serif); font-variation-settings:'opsz' 20; font-size:18px; }
+.toc-c{ font-family:var(--mono); font-size:var(--s-xs); color:var(--faint); }
+
+/* ---------- body: rail + questions ---------- */
 .shell{
-    max-width:1180px; margin:0 auto; padding:0 var(--gutter) 40px;
-    display:grid; grid-template-columns:var(--rail) minmax(0,1fr); gap:clamp(28px,5vw,72px);
-    align-items:start;
+    display:grid; grid-template-columns:var(--rail) minmax(0,1fr);
+    gap:clamp(28px,5vw,80px); align-items:start;
+    padding-bottom:var(--sp-5);
 }
-@media (max-width:940px){ .shell{ grid-template-columns:1fr; gap:0; } }
+@media (max-width:960px){ .shell{ grid-template-columns:1fr; gap:0; } }
 
-/* ---------- index rail ---------- */
-.index{ position:sticky; top:64px; padding:clamp(30px,4vw,48px) 0 0; }
-.index-h{
-    font-family:var(--mono); font-size:10.5px; letter-spacing:.14em;
-    text-transform:uppercase; color:var(--faint); margin:0 0 14px;
+.rail{ position:sticky; top:62px; padding:var(--sp-5) 0 0; }
+.rail-h{ margin:0 0 var(--sp-2); }
+.rail ol{ list-style:none; margin:0; padding:0; }
+.rail a{
+    display:grid; grid-template-columns:10px 1fr; gap:11px; align-items:center;
+    padding:5px 0 5px 13px; text-decoration:none; color:var(--muted);
+    font-size:13.5px; line-height:1.35;
+    border-left:1px solid var(--rule-fine);
 }
-.index ol{ list-style:none; margin:0; padding:0; }
-.index li{ margin:0; }
-.index a{
-    display:grid; grid-template-columns:16px 1fr; gap:10px; align-items:baseline;
-    padding:6px 0; text-decoration:none; color:var(--muted);
-    font-size:14px; line-height:1.35; border-left:2px solid transparent; padding-left:12px;
-    transition:color .15s ease, border-color .15s ease;
-}
-.index a:hover{ color:var(--ink); }
-.index a:focus-visible{ outline:2px solid var(--pen); outline-offset:2px; }
-.index a[aria-current="true"]{ color:var(--ink); border-left-color:var(--pen); }
-.index .ix-n{ font-family:var(--mono); font-size:11px; color:var(--faint); }
-.index a[aria-current="true"] .ix-n{ color:var(--pen); }
+.rail a:hover{ color:var(--ink); border-left-color:var(--rule); }
+.rail a:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+.rail a[aria-current="true"]{ color:var(--ink); border-left-color:var(--accent); }
+.rail .rn{ font-family:var(--mono); font-size:var(--s-xs); color:var(--faint); }
+.rail a[aria-current="true"] .rn{ color:var(--accent); }
 
-/* State marker. Empty ring = untouched, half = started, solid = every
-   question in that section answered. */
-.ix-dot{
-    grid-column:1; width:9px; height:9px; border-radius:50%;
-    border:1.5px solid var(--rule); align-self:center; position:relative;
-}
-.ix-part .ix-dot{ border-color:var(--pen); }
-.ix-part .ix-dot::after{
+/* State marker: ring, half, solid. Real state, not ornament. */
+.dot{ width:8px; height:8px; border-radius:50%; border:1px solid var(--rule); position:relative; }
+.part .dot{ border-color:var(--accent); }
+.part .dot::after{
     content:""; position:absolute; inset:1px; border-radius:50%;
-    background:linear-gradient(to right, var(--pen) 50%, transparent 50%);
+    background:linear-gradient(to right,var(--accent) 50%,transparent 50%);
 }
-.ix-done .ix-dot{ border-color:var(--ok); background:var(--ok); }
-.index .ix-key{
-    font-family:var(--mono); font-size:10.5px; color:var(--faint);
-    margin:18px 0 0; padding-top:14px; border-top:1px solid var(--rule-soft); line-height:1.7;
-}
+.full .dot{ border-color:var(--ok); background:var(--ok); }
+.rail-key{ margin:var(--sp-3) 0 0; padding-top:var(--sp-2); border-top:1px solid var(--rule-fine); line-height:1.9; text-transform:none; letter-spacing:.02em; }
 
-/* Mobile: the rail becomes a jump list you open, not a sticky column. */
-.jump{ display:none; margin:26px 0 0; border:1px solid var(--rule); background:var(--card); }
-.jump summary{
-    font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase;
-    padding:13px 16px; cursor:pointer; color:var(--pen); list-style:none;
-}
+.jump{ display:none; margin:0 0 var(--sp-4); border:1px solid var(--rule); background:var(--sheet); }
+.jump summary{ padding:13px 16px; cursor:pointer; list-style:none; color:var(--accent); }
 .jump summary::-webkit-details-marker{ display:none; }
-.jump summary::after{ content:" ↓"; }
-.jump[open] summary::after{ content:" ↑"; }
-.jump .index{ position:static; padding:0 16px 14px; }
-.jump .index-h{ display:none; }
-@media (max-width:940px){
-    .index-desk{ display:none; }
-    .jump{ display:block; }
-}
+.jump summary::after{ content:"  +"; }
+.jump[open] summary::after{ content:"  \2212"; }
+.jump .rail{ position:static; padding:0 16px 14px; }
+.jump .rail-h{ display:none; }
+@media (max-width:960px){ .rail-desk{ display:none; } .jump{ display:block; } }
 
 /* ---------- sections ---------- */
-.qs{ padding-top:clamp(30px,4vw,48px); }
-section{ scroll-margin-top:72px; padding:0 0 clamp(40px,6vw,72px); }
-.sec-head{ border-top:2px solid var(--ink); padding-top:16px; margin:0 0 4px; }
-.sec-n{
-    font-family:var(--mono); font-size:11px; letter-spacing:.14em;
-    color:var(--pen); display:block; margin:0 0 10px;
-}
+.qs{ padding-top:var(--sp-5); }
+section{ scroll-margin-top:70px; padding:0 0 var(--sp-6); }
+.sh{ border-top:1px solid var(--ink); padding-top:var(--sp-2); margin:0 0 var(--sp-1); }
+.sh-row{ display:flex; align-items:baseline; justify-content:space-between; gap:var(--sp-3); margin:0 0 var(--sp-2); }
 h2{
-    font-family:var(--serif); font-weight:500;
-    font-size:clamp(25px,3.6vw,34px); line-height:1.15; letter-spacing:-.015em;
-    margin:0 0 10px; max-width:22ch; text-wrap:balance;
+    font-family:var(--serif); font-weight:400; font-variation-settings:'opsz' 40;
+    font-size:var(--s-xl); line-height:1.14; letter-spacing:-.015em;
+    margin:0 0 var(--sp-1); max-width:22ch; text-wrap:balance;
 }
-.sec-sub{ color:var(--muted); font-size:15px; margin:0; max-width:56ch; }
+.sh-sub{ color:var(--muted); font-size:var(--s-md); margin:0; max-width:54ch; }
+.sh-count{ white-space:nowrap; }
 
-/* The two sections that actually carry the site are marked as such. */
-section.key .sec-head{ border-top-color:var(--pen); }
-.spend{
-    display:inline-block; font-family:var(--mono); font-size:10px; letter-spacing:.12em;
-    text-transform:uppercase; color:var(--pen); border:1px solid var(--pen);
-    padding:3px 8px; border-radius:2px; margin:0 0 12px;
+section.key .sh{ border-top-color:var(--accent); border-top-width:2px; }
+.mark{
+    font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent); border:1px solid var(--accent); padding:3px 8px; white-space:nowrap;
 }
 
 /* ---------- fields ---------- */
-.f{ margin:28px 0 0; max-width:62ch; }
-.q{ font-family:var(--serif); font-size:19.5px; line-height:1.4; display:block; margin:0 0 6px; color:var(--ink); }
+.f{ margin:var(--sp-4) 0 0; max-width:60ch; }
+.q{
+    font-family:var(--serif); font-variation-settings:'opsz' 20; font-weight:400;
+    font-size:var(--s-lg); line-height:1.4; display:block; margin:0 0 var(--sp-1); color:var(--ink);
+}
 .q em{ font-style:italic; }
-.hint{ font-family:var(--mono); font-size:12.5px; line-height:1.6; color:var(--muted); margin:0 0 11px; }
-.hint.flag{ color:var(--flag); background:var(--flag-soft); padding:9px 11px; border-radius:2px; }
+.hint{ font-family:var(--mono); font-size:var(--s-sm); line-height:1.65; color:var(--muted); margin:0 0 11px; }
+.hint.flag{ color:var(--flag); background:var(--flag-soft); padding:10px 12px; }
 
 .tag{
-    font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+    font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase;
     vertical-align:3px; margin-left:9px; padding:2px 6px;
-    border:1px solid var(--rule); border-radius:2px; color:var(--faint); white-space:nowrap;
+    border:1px solid var(--rule); color:var(--faint); white-space:nowrap;
 }
-.tag.req{ color:var(--pen); border-color:var(--pen); }
+.tag.req{ color:var(--accent); border-color:var(--accent); }
 
 input[type=text], input[type=email], input[type=url], input[type=tel], textarea{
     width:100%; display:block;
-    font-family:var(--sans); font-size:16.5px; line-height:1.6; color:var(--ink);
-    background:var(--card); border:1px solid var(--rule); border-radius:2px;
-    padding:12px 14px;
+    font-family:var(--sans); font-size:var(--s-base); line-height:1.6; color:var(--ink);
+    background:var(--sheet); border:1px solid var(--rule); border-radius:0;
+    padding:13px 15px;
     transition:border-color .15s ease, box-shadow .15s ease;
 }
 @media (prefers-reduced-motion: reduce){ input, textarea{ transition:none; } }
-textarea{ min-height:110px; resize:vertical; }
-textarea.tall{ min-height:180px; }
+textarea{ min-height:112px; resize:vertical; }
+textarea.tall{ min-height:184px; }
 input:hover, textarea:hover{ border-color:var(--faint); }
 input:focus-visible, textarea:focus-visible{
-    outline:none; border-color:var(--pen); box-shadow:0 0 0 3px var(--pen-soft);
+    outline:none; border-color:var(--accent); box-shadow:inset 3px 0 0 var(--accent);
 }
-.filled{ border-left:2px solid var(--ok); }
+.filled{ border-left:3px solid var(--ok); }
 
-.grid2{ display:grid; grid-template-columns:1fr 1fr; gap:20px; max-width:62ch; }
+.grid2{ display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-3); max-width:60ch; }
 @media (max-width:620px){ .grid2{ grid-template-columns:1fr; } }
 
 /* ---------- the photographs panel ---------- */
-.drop{
-    margin:28px 0 0; padding:20px 22px; max-width:62ch;
-    border:1px solid var(--pen); border-left-width:3px; background:var(--pen-soft);
-}
-.drop-h{ font-family:var(--serif); font-size:21px; margin:0 0 8px; color:var(--ink); }
-.drop-p{ font-family:var(--mono); font-size:12.5px; line-height:1.65; color:var(--ink-2); margin:0 0 12px; }
+.drop{ margin:var(--sp-4) 0 0; padding:var(--sp-3) 22px; max-width:60ch; border:1px solid var(--accent); background:var(--accent-soft); }
+.drop-h{ font-family:var(--serif); font-variation-settings:'opsz' 24; font-size:21px; margin:0 0 var(--sp-1); color:var(--ink); }
+.drop-p{ font-family:var(--mono); font-size:var(--s-sm); line-height:1.7; color:var(--ink-2); margin:0 0 var(--sp-2); }
 .drop p:last-child{ margin:0; }
 
-/* ---------- closing panel ---------- */
-.finish{ max-width:62ch; margin:0 0 40px; border:2px solid var(--ink); padding:clamp(22px,3vw,32px); }
-.finish h2{ margin:0 0 10px; }
-.finish p{ margin:0 0 18px; color:var(--muted); font-size:15px; }
+/* ---------- sign off ---------- */
+.finish{ max-width:60ch; border:1px solid var(--ink); background:var(--sheet); padding:var(--sp-4); margin:0 0 var(--sp-5); }
+.finish h2{ margin:0 0 var(--sp-2); }
+.finish p{ margin:0 0 var(--sp-3); color:var(--muted); font-size:var(--s-md); }
 .row{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
-button, .btn{
-    font-family:var(--mono); font-size:13px; letter-spacing:.03em;
-    padding:12px 18px; border-radius:2px; cursor:pointer; text-decoration:none;
-    display:inline-block; border:1px solid var(--pen); background:var(--pen); color:#fff;
-    transition:background .15s ease, color .15s ease, transform .1s ease;
+button,.btn{
+    font-family:var(--mono); font-size:13px; letter-spacing:.04em;
+    padding:13px 20px; border-radius:0; cursor:pointer; text-decoration:none; display:inline-block;
+    border:1px solid var(--accent); background:var(--accent); color:#fff;
+    transition:background .15s ease, color .15s ease;
 }
-button.ghost, .btn.ghost{ background:transparent; color:var(--pen); }
-button:hover, .btn:hover{ transform:translateY(-1px); }
-button.ghost:hover, .btn.ghost:hover{ background:var(--pen-soft); }
-button:focus-visible, .btn:focus-visible{ outline:2px solid var(--ink); outline-offset:2px; }
-@media (prefers-reduced-motion: reduce){ button:hover, .btn:hover{ transform:none; } }
-.say{ font-family:var(--mono); font-size:12.5px; color:var(--muted); flex:1 1 100%; margin:4px 0 0; min-height:18px; }
+/* In dark mode the accent becomes light, so the solid button needs dark
+   text. Scoped to :not(.ghost): the un-scoped version won on specificity
+   over button.ghost and painted the outline buttons near black on near
+   black, at 1.03:1. */
+:root[data-theme="dark"] button:not(.ghost), :root[data-theme="dark"] .btn:not(.ghost){ color:#12161E; }
+@media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) button:not(.ghost),
+    :root:not([data-theme="light"]) .btn:not(.ghost){ color:#12161E; }
+}
+button.ghost,.btn.ghost{ background:transparent; color:var(--accent); }
+button:hover,.btn:hover{ background:var(--ink); border-color:var(--ink); color:var(--desk); }
+button:focus-visible,.btn:focus-visible{ outline:2px solid var(--ink); outline-offset:3px; }
+.say{ font-family:var(--mono); font-size:var(--s-sm); color:var(--muted); flex:1 1 100%; margin:var(--sp-1) 0 0; min-height:18px; }
 .say.good{ color:var(--ok); }
 .say.bad{ color:var(--flag); }
 
-/* A compact copy pill that only appears once there is something to copy. */
 .pill{
-    position:fixed; right:clamp(14px,3vw,26px); bottom:clamp(14px,3vw,26px); z-index:70;
-    box-shadow:0 6px 22px rgba(0,0,0,.16); opacity:0; pointer-events:none;
-    transform:translateY(8px); transition:opacity .2s ease, transform .2s ease;
+    position:fixed; right:clamp(14px,3vw,28px); bottom:clamp(14px,3vw,28px); z-index:70;
+    opacity:0; pointer-events:none; transform:translateY(6px);
+    transition:opacity .2s ease, transform .2s ease;
+    box-shadow:0 2px 14px rgba(20,19,15,.18);
 }
-.pill.on{ opacity:1; pointer-events:auto; transform:translateY(0); }
+.pill.on{ opacity:1; pointer-events:auto; transform:none; }
 @media (prefers-reduced-motion: reduce){ .pill{ transition:none; } }
 
-footer.end{
-    max-width:1180px; margin:0 auto; padding:26px var(--gutter) 60px;
-    border-top:1px solid var(--rule);
-    font-family:var(--mono); font-size:11.5px; line-height:1.8; color:var(--faint);
-}
-footer.end button{ margin-top:8px; }
+/* ---------- colophon ---------- */
+.colophon{ border-top:1px solid var(--rule); padding:var(--sp-4) 0 var(--sp-6); }
+.colophon-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:var(--sp-4); }
+.colophon p{ margin:var(--sp-1) 0 0; font-size:var(--s-sm); line-height:1.75; color:var(--muted); max-width:40ch; }
+.colophon button{ margin-top:var(--sp-2); }
 
-.boot{ max-width:60ch; margin:0 auto; padding:70px var(--gutter); font-family:var(--serif); font-size:20px; color:var(--muted); }
+.boot{ max-width:56ch; margin:0 auto; padding:80px var(--gutter); font-family:var(--serif); font-size:20px; color:var(--muted); }
+
+/* ==========================================================
+   PRINT. She may want to fill this in on paper, or hand it to
+   someone else to draft. Rail, buttons and progress go; every
+   question keeps a ruled space to write in.
+   ========================================================== */
+@media print{
+    :root{ --desk:#fff; --sheet:#fff; --ink:#000; --ink-2:#222; --muted:#333; --faint:#444;
+           --rule:#999; --rule-fine:#ccc; --accent:#000; --accent-soft:#fff; --flag:#000; --flag-soft:#fff; }
+    .head,.rail-desk,.jump,.pill,.finish .row,.colophon button{ display:none !important; }
+    body{ font-size:11pt; }
+    .shell{ grid-template-columns:1fr; }
+    section{ page-break-inside:auto; padding-bottom:18pt; }
+    .sh,.f{ page-break-inside:avoid; }
+    h1{ font-size:32pt; }
+    h2{ font-size:16pt; }
+    .toc a{ padding:5px 0; }
+    /* The typed input rules are set on input[type=...] which outranks a
+       bare element selector, so the print sheet kept all four borders
+       and printed boxes instead of ruled lines. */
+    input[type=text],input[type=email],input[type=url],input[type=tel],textarea{
+        border:0; border-bottom:1px solid #999; background:transparent; min-height:0; padding:2pt 0;
+    }
+    .filled{ border-left:0; }
+    textarea{ height:64pt; }
+    textarea.tall{ height:104pt; }
+    .drop{ border:1px solid #000; }
+    a[href^="http"]::after{ content:" (" attr(href) ")"; font-size:8pt; word-break:break-all; }
+}
 </style>
 
 <div id="app"><p class="boot">Loading the questionnaire&hellip; if this message stays, JavaScript is switched off in this browser.</p></div>
@@ -392,8 +439,9 @@ footer.end button{ margin-top:8px; }
       { id:'else',   q:'Anything I didn’t ask?', area:true, tall:true, hint:'This box is where the best material usually turns up.' }
     ]}
   ]
-  /* Sections worth spending real time on. Marked, not hidden. */
-  var KEY_SECTIONS = { '08':1, '09':1 };
+
+  /* The two sections that carry the site. Marked, never hidden. */
+  var KEY = { '08':1, '09':1 };
 
   var ALL = [];
   SECTIONS.forEach(function(s){ s.fields.forEach(function(f){ ALL.push(f); }); });
@@ -407,54 +455,67 @@ footer.end button{ margin-top:8px; }
       return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
     });
   }
-  function stripTags(s){ return String(s).replace(/<[^>]*>/g, ''); }
+  function strip(s){ return String(s).replace(/<[^>]*>/g, ''); }
 
   /* localStorage is a per-device convenience. Private windows and blocked
      site data throw on access, so every call is guarded and the page has to
-     work with nothing stored. */
+     render correctly with nothing stored. */
   function get(k){ try { return window.localStorage.getItem(k); } catch (e) { return null; } }
   function set(k,v){ try { window.localStorage.setItem(k,v); return true; } catch (e) { return false; } }
   function del(k){ try { window.localStorage.removeItem(k); } catch (e) { /* nothing stored */ } }
-
   function loadDraft(){
     var raw = get(DRAFT_KEY);
     if (!raw) { return {}; }
     try { return JSON.parse(raw) || {}; } catch (e) { return {}; }
   }
 
-  /* ---------- view ---------- */
+  /* ---------- document ---------- */
   function render(){
     var seed = loadDraft();
     var h = '';
 
-    h += '<div class="bar"><div class="bar-track"><div class="bar-fill" id="fill"></div></div>'
-       + '<div class="bar-row"><span><b id="done">0</b> of <b>' + ALL.length + '</b> answered</span>'
+    h += '<div class="head"><div class="head-track"><div class="head-fill" id="fill"></div></div>'
+       + '<div class="head-row label"><span><b id="done">0</b> of <b>' + ALL.length + '</b> answered</span>'
        + '<span id="saved">saved on this device</span></div></div>';
 
-    h += '<header class="hero"><div class="hero-in">'
-       + '<p class="kicker">Rana Tahir Bilal &middot; Website intake</p>'
+    /* --- front matter --- */
+    h += '<div class="page"><header class="cover">'
+       + '<div class="masthead"><span class="label">Rana Tahir Bilal</span>'
+       + '<span class="label">Website intake</span></div>'
        + '<h1>Before I build your site, I need to hear it from you.</h1>'
-       + '<p class="lede">There is very little about you online, which is a good problem: the site will be the first proper account of your work rather than a rehash of someone else’s. But it means I cannot write a word of it until you tell me.</p>'
-       + '<p class="lede">Answer in whatever voice you actually speak in. <em>Fragments are fine. Long is better than short.</em> I will do the shaping.</p>'
-       + '<dl class="facts">'
-       + '<div class="fact"><dt>How long</dt><dd>About forty minutes, in as many sittings as you like.</dd></div>'
-       + '<div class="fact"><dt>Saving</dt><dd>Every answer is kept in this browser as you type.</dd></div>'
-       + '<div class="fact"><dt>Sending</dt><dd>Press Copy at the end and paste it into a reply to my email.</dd></div>'
-       + '</dl>'
-       + '<details class="jump"><summary>Jump to a section</summary>' + indexHTML('m') + '</details>'
-       + '</div></header>';
+       + '<p class="standfirst">There is very little about you online, which is a good problem: the site will be the first proper account of your work rather than a rehash of someone else’s. But it means I cannot write a word of it until you tell me.</p>'
+       + '<p class="standfirst">Answer in whatever voice you actually speak in. <em>Fragments are fine. Long is better than short.</em> I will do the shaping.</p>'
+       + '<dl class="spec">'
+       + row('Sections', SECTIONS.length + ', numbered below')
+       + row('Questions', ALL.length + ' in total, ' + ALL.filter(function(f){ return f.req; }).length + ' of them essential')
+       + row('Time', 'About forty minutes, in as many sittings as you like')
+       + row('Saving', 'Every answer is kept in this browser as you type')
+       + row('Returning', 'Press Copy at the end and paste it into a reply to my email')
+       + '</dl></header>';
 
-    h += '<div class="shell">'
-       + '<nav class="index index-desk" aria-label="Sections">' + indexHTML('d') + '</nav>'
-       + '<div class="qs">';
+    /* --- contents --- */
+    h += '<nav class="contents" aria-label="Contents">'
+       + '<p class="label contents-h">Contents</p><ol class="toc">';
+    SECTIONS.forEach(function(s){
+      h += '<li><a href="#s' + s.n + '"><span class="toc-n">' + s.n + '</span>'
+         + '<span class="toc-t">' + esc(strip(s.t)) + '</span>'
+         + '<span class="toc-c">' + s.fields.length + (KEY[s.n] ? ' · worth the time' : '') + '</span></a></li>';
+    });
+    h += '</ol></nav>';
+
+    /* --- body --- */
+    h += '<details class="jump label"><summary>Jump to a section</summary>' + railHTML('m') + '</details>';
+    h += '<div class="shell"><nav class="rail rail-desk" aria-label="Sections">' + railHTML('d') + '</nav><div class="qs">';
 
     SECTIONS.forEach(function(s){
-      var isKey = !!KEY_SECTIONS[s.n];
-      h += '<section id="s' + s.n + '"' + (isKey ? ' class="key"' : '') + '>'
-         + '<div class="sec-head"><span class="sec-n">' + s.n + ' / ' + SECTIONS.length + '</span>'
-         + (isKey ? '<span class="spend">Worth the time</span>' : '')
-         + '<h2>' + s.t + '</h2>'
-         + (s.sub ? '<p class="sec-sub">' + s.sub + '</p>' : '')
+      var k = !!KEY[s.n];
+      h += '<section id="s' + s.n + '"' + (k ? ' class="key"' : '') + '>'
+         + '<div class="sh"><div class="sh-row">'
+         + '<span class="label">§ ' + s.n + '</span>'
+         + (k ? '<span class="mark">Worth the time</span>'
+              : '<span class="label sh-count" id="c-' + s.n + '">0 / ' + s.fields.length + '</span>')
+         + '</div><h2>' + s.t + '</h2>'
+         + (s.sub ? '<p class="sh-sub">' + s.sub + '</p>' : '')
          + '</div>';
       if (s.blurb) { h += s.blurb(); }
       var i = 0;
@@ -470,19 +531,19 @@ footer.end button{ margin-top:8px; }
 
     h += '<div class="finish"><h2>That is everything.</h2>'
        + '<p>Press Copy, then paste it straight into a reply to my email. If anything is still blank, send it anyway and I will ask.</p>'
-       + '<div class="row">'
-       + '<button id="copy" type="button">Copy everything</button>'
+       + '<div class="row"><button id="copy" type="button">Copy everything</button>'
        + '<a id="dl" class="btn ghost" download="website-intake.txt" href="#">Save as a file</a>'
-       + '<p class="say" id="say" role="status" aria-live="polite"></p>'
-       + '</div></div>';
+       + '<p class="say" id="say" role="status" aria-live="polite"></p></div></div>';
 
     h += '</div></div>';
 
-    h += '<footer class="end">'
-       + '<p>Your answers exist only in this browser on this device. Nothing is sent anywhere until you copy them and send them yourself. Clearing your browser data will clear them.</p>'
-       + '<p>Rana Tahir Bilal &middot; Website intake</p>'
-       + '<p><button id="clear" class="ghost" type="button">Clear the draft</button></p>'
-       + '</footer>';
+    /* --- colophon --- */
+    h += '<footer class="colophon"><div class="colophon-grid">'
+       + '<div><p class="label">Where your answers live</p><p>Only in this browser, on this device, until you copy them and send them yourself. Clearing your browser data clears them.</p></div>'
+       + '<div><p class="label">What I will not do</p><p>Invent awards, dates, titles, quotes, publications or employment history, or round anything up. If a detail is missing I will ask again rather than guess.</p></div>'
+       + '<div><p class="label">Starting over</p><p>This wipes every answer on this device and cannot be undone.</p>'
+       + '<button id="clear" class="ghost" type="button">Clear the draft</button></div>'
+       + '</div></footer></div>';
 
     h += '<button id="pill" class="pill" type="button">Copy everything</button>';
 
@@ -490,25 +551,25 @@ footer.end button{ margin-top:8px; }
     wire();
   }
 
-  function indexHTML(scope){
-    var h = '<p class="index-h">The sections</p><ol>';
+  function row(k, v){ return '<div><dt class="label">' + k + '</dt><dd>' + v + '</dd></div>'; }
+
+  function railHTML(scope){
+    var h = '<p class="label rail-h">The sections</p><ol>';
     SECTIONS.forEach(function(s){
-      h += '<li id="ix-' + scope + '-' + s.n + '"><a href="#s' + s.n + '">'
-         + '<span class="ix-dot" aria-hidden="true"></span>'
-         + '<span><span class="ix-n">' + s.n + '</span> ' + esc(stripTags(s.t)) + '</span></a></li>';
+      h += '<li id="r-' + scope + '-' + s.n + '"><a href="#s' + s.n + '">'
+         + '<span class="dot" aria-hidden="true"></span>'
+         + '<span><span class="rn">' + s.n + '</span> ' + esc(strip(s.t)) + '</span></a></li>';
     });
-    h += '</ol><p class="ix-key">Ring, part filled, solid.<br>Nothing here is compulsory.</p>';
-    return h;
+    return h + '</ol><p class="label rail-key">Ring, half, solid.<br>Nothing here is compulsory.</p>';
   }
 
   function field(f, seed){
     var v = seed && typeof seed[f.id] === 'string' ? seed[f.id] : '';
-    var tag = f.req ? '<span class="tag req">Required</span>' : (f.opt ? '<span class="tag">Optional</span>' : '');
+    var tag = f.req ? '<span class="tag req">Essential</span>' : (f.opt ? '<span class="tag">Optional</span>' : '');
     var control = f.area
       ? '<textarea id="f_' + f.id + '" data-f="' + f.id + '"' + (f.tall ? ' class="tall"' : '') + '>' + esc(v) + '</textarea>'
       : '<input type="' + (f.type || 'text') + '" id="f_' + f.id + '" data-f="' + f.id + '" value="' + esc(v) + '">';
-    return '<div class="f">'
-      + '<label class="q" for="f_' + f.id + '">' + f.q + tag + '</label>'
+    return '<div class="f"><label class="q" for="f_' + f.id + '">' + f.q + tag + '</label>'
       + (f.hint ? '<p class="hint' + (f.flag ? ' flag' : '') + '">' + f.hint + '</p>' : '')
       + control + '</div>';
   }
@@ -540,11 +601,13 @@ footer.end button{ margin-top:8px; }
           if (has) { n++; total++; }
           el.classList.toggle('filled', has);
         });
-        var state = n === 0 ? '' : (n === s.fields.length ? 'ix-done' : 'ix-part');
+        var state = n === 0 ? '' : (n === s.fields.length ? 'full' : 'part');
         ['d','m'].forEach(function(scope){
-          var li = document.getElementById('ix-' + scope + '-' + s.n);
+          var li = document.getElementById('r-' + scope + '-' + s.n);
           if (li) { li.className = state; }
         });
+        var c = document.getElementById('c-' + s.n);
+        if (c) { c.textContent = n + ' / ' + s.fields.length; }
       });
       doneEl.textContent = total;
       fill.style.width = (ALL.length ? (total / ALL.length) * 100 : 0) + '%';
@@ -558,17 +621,17 @@ footer.end button{ margin-top:8px; }
         progress();
         window.clearTimeout(saveTimer);
         saveTimer = window.setTimeout(function(){
-          /* Guard against writing an empty draft if the form has gone away. */
+          /* Never write an empty draft over real answers if the form is gone. */
           if (!document.getElementById('f_name')) { return; }
           savedEl.textContent = set(DRAFT_KEY, JSON.stringify(collect()))
-            ? 'saved on this device' : 'not saved — copy before you close';
+            ? 'saved on this device' : 'not saved, copy before you close';
         }, 400);
       });
     });
 
     progress();
     wireCopy();
-    wireIndex();
+    wireRail();
 
     document.getElementById('clear').addEventListener('click', function(){
       if (!window.confirm('Clear every answer on this device? This cannot be undone.')) { return; }
@@ -582,10 +645,13 @@ footer.end button{ margin-top:8px; }
     });
   }
 
-  /* Highlights whichever section is currently on screen. Falls back to no
-     highlight at all where IntersectionObserver is missing, which costs
-     nothing: the links still work. */
-  function wireIndex(){
+  function wireRail(){
+    var jump = document.querySelector('.jump');
+    if (jump) {
+      jump.addEventListener('click', function(e){
+        if (e.target.closest('a')) { jump.removeAttribute('open'); }
+      });
+    }
     if (!('IntersectionObserver' in window)) { return; }
     var current = null;
     var io = new IntersectionObserver(function(entries){
@@ -595,32 +661,23 @@ footer.end button{ margin-top:8px; }
         if (n === current) { return; }
         current = n;
         /* Clear once, then mark both rails. Clearing inside the loop wiped
-           the desktop mark again on the mobile pass, so nothing was ever
-           highlighted on the rail people actually see. */
-        var list = document.querySelectorAll('.index a[aria-current]');
-        Array.prototype.forEach.call(list, function(a){ a.removeAttribute('aria-current'); });
+           the desktop mark on the mobile pass. */
+        var open = document.querySelectorAll('.rail a[aria-current]');
+        Array.prototype.forEach.call(open, function(a){ a.removeAttribute('aria-current'); });
         ['d','m'].forEach(function(scope){
-          var li = document.getElementById('ix-' + scope + '-' + n);
+          var li = document.getElementById('r-' + scope + '-' + n);
           if (li) { li.querySelector('a').setAttribute('aria-current','true'); }
         });
       });
-    }, { rootMargin: '-72px 0px -55% 0px', threshold: 0 });
+    }, { rootMargin:'-70px 0px -55% 0px', threshold:0 });
     SECTIONS.forEach(function(s){
       var el = document.getElementById('s' + s.n);
       if (el) { io.observe(el); }
     });
-    /* Tapping a link in the mobile jump list should close it again. */
-    var jump = document.querySelector('.jump');
-    if (jump) {
-      jump.addEventListener('click', function(e){
-        if (e.target.closest('a')) { jump.removeAttribute('open'); }
-      });
-    }
   }
 
   function wireCopy(){
     function text(){ return transcript(collect()); }
-
     function doCopy(){
       var t = text();
       if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -629,13 +686,11 @@ footer.end button{ margin-top:8px; }
           .catch(function(){ fallbackCopy(t); });
       } else { fallbackCopy(t); }
     }
-
     document.getElementById('copy').addEventListener('click', doCopy);
     document.getElementById('pill').addEventListener('click', function(){
       document.getElementById('copy').scrollIntoView({ block:'center' });
       doCopy();
     });
-
     var dl = document.getElementById('dl');
     dl.addEventListener('click', function(){
       /* Built at click time so the file always holds the latest answers. */
@@ -671,10 +726,10 @@ footer.end button{ margin-top:8px; }
     var out = ['WEBSITE INTAKE' + (answers.name ? ' — ' + answers.name : ''), ''];
     SECTIONS.forEach(function(s){
       out.push('');
-      out.push('== ' + stripTags(s.t).toUpperCase() + ' ==');
+      out.push('== ' + strip(s.t).toUpperCase() + ' ==');
       s.fields.forEach(function(f){
         out.push('');
-        out.push(stripTags(f.q));
+        out.push(strip(f.q));
         out.push(answers[f.id] ? answers[f.id] : '(not answered)');
       });
     });
