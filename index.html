@@ -209,17 +209,11 @@ footer.end{ margin-top:34px; padding-top:22px; border-top:1px solid var(--rule);
   "use strict";
 
   /* ==========================================================
-     Static build for ranatahirbilal.github.io.
-     Answers are POSTed to a form endpoint that emails them on.
-     If no key is configured the Submit button never appears and
-     the page falls back to Copy, so it is always usable.
+     Static build for ranatahirbilal.github.io. No backend, no
+     account, no cost: answers live in this browser until she
+     copies them into a reply. Photographs travel as a shared
+     folder link so nothing large goes through email.
      ========================================================== */
-
-  var ACCESS_KEY = '';                       /* <- Web3Forms access key goes here */
-  var UPLOAD_URL = '';                       /* <- Drive/Dropbox upload folder goes here */
-  var ENDPOINT   = 'https://api.web3forms.com/submit';
-  var canSubmit  = ACCESS_KEY.length > 0;
-  var canUpload  = UPLOAD_URL.length > 0;
 
   var SECTIONS = [
     { n:'01', t:'The basics', sub:'Exactly as you want them printed. Spelling, middle initial, punctuation, all of it.', fields:[
@@ -279,20 +273,17 @@ footer.end{ margin-top:34px; padding-top:22px; border-top:1px solid var(--rule);
     ]},
     { n:'12', t:'Photographs', sub:'A personal site with no picture of the person doesn’t work. This is the section people skip and then regret.',
       blurb: function(){
-        /* The upload folder is optional config. Without it the panel still
-           appears and tells her to reply by email, so the section never
-           leaves her without an instruction. */
-        return canUpload
-          ? '<div class="drop"><p class="drop-h">Upload your photographs</p>'
-            + '<p class="drop-p">Opens a private folder. Drag in as many as you like &mdash; originals, not screenshots. '
-            + 'Do this before or after you answer the questions; the two are separate.</p>'
-            + '<p><a class="dlbtn drop-a" href="' + UPLOAD_URL + '" target="_blank" rel="noopener noreferrer">Open the upload folder</a></p></div>'
-          : '<div class="drop"><p class="drop-h">Sending your photographs</p>'
-            + '<p class="drop-p">Attach them to a reply to my email &mdash; originals, at the largest size you have, not screenshots. '
-            + 'Send them separately from these answers; the two do not need to arrive together.</p></div>';
+        return '<div class="drop"><p class="drop-h">Sending me your photographs</p>'
+          + '<p class="drop-p">Put them in a Google Drive or Dropbox folder, or drop them into WeTransfer, '
+          + 'and paste the link in the box below. That way there is no size limit and nothing gets squashed by email.</p>'
+          + '<p class="drop-p"><b>Before you paste it:</b> open the link in a private or incognito window and check it '
+          + 'actually opens. A Drive folder is set to &ldquo;Restricted&rdquo; by default, which means only you can see it. '
+          + 'Change it to <b>Anyone with the link</b>, or I will not be able to open it.</p></div>';
       },
       fields:[
       { id:'photos',    q:'What photographs do you have?', req:true, area:true, hint:'List what exists, even roughly &mdash; a professional headshot, phone photos, photos from an event, an old ID badge photo. If the honest answer is &ldquo;almost nothing,&rdquo; say that; it changes how I build the site.' },
+      { id:'photolink', q:'Paste the link to your photographs here.', req:true, area:true, flag:true,
+        hint:'Check it opens in a private window first. If sharing is left on &ldquo;Restricted&rdquo; the link will not work for me. If you would rather email them, write &ldquo;by email&rdquo; here instead and send them as a reply.' },
       { id:'photoright',q:'Who took them, and may I publish them?', req:true, area:true, flag:true, hint:'If a photographer or your employer holds the rights, I need that cleared before it goes up. Tell me about any photo I must not use.' },
       { id:'photoai',   q:'May I create additional pictures of you for the site?', area:true, flag:true, hint:'Most sites need shots nobody has &mdash; you at work, in your own setting. Where no such photograph exists I can produce illustrated versions built from the photographs you send: pictures of you that no camera actually took. They are marked as illustrations in the footer so nobody is misled. I will not make a single one without your written yes here. Say yes, no, or ask me first.' }
     ]},
@@ -312,9 +303,7 @@ footer.end{ margin-top:34px; padding-top:22px; border-top:1px solid var(--rule);
   SECTIONS.forEach(function(s){ s.fields.forEach(function(f){ ALL.push(f); }); });
 
   var DRAFT_KEY = 'rtb-intake-v1';
-  var SENT_KEY  = 'rtb-intake-sent-v1';
   var app = document.getElementById('app');
-  var busy = false;
   var saveTimer = null;
 
   function esc(s){
@@ -339,7 +328,7 @@ footer.end{ margin-top:34px; padding-top:22px; border-top:1px solid var(--rule);
 
   /* ---------- views ---------- */
   function render(){
-    if (get(SENT_KEY) && !window.__editing) { renderSent(); } else { renderForm(); }
+    renderForm();
     window.scrollTo(0,0);
   }
 
@@ -357,9 +346,7 @@ footer.end{ margin-top:34px; padding-top:22px; border-top:1px solid var(--rule);
        + '<p class="lede">There is very little about you online, which is a good problem &mdash; it means the site will be the first proper account of your work rather than a rehash of someone else\u2019s. But it means I cannot write a word of it until you tell me.</p>'
        + '<p class="lede">Answer in whatever voice you actually speak in. <em>Fragments are fine. Long is better than short.</em> I will do the shaping.</p>'
        + '<div class="note">'
-       + (canSubmit
-            ? '<p><b>How this works.</b> Answer as much as you can, then press <b>Send to Rana</b> at the bottom. Your answers save in this browser as you type, so you can close the page and come back to it.</p>'
-            : '<p><b>How this works.</b> Answer as much as you can, then press <b>Copy everything</b> at the bottom and paste it into a reply to my email. Your answers save in this browser as you type, so you can close the page and come back to it.</p>')
+       + '<p><b>How this works.</b> Answer as much as you can, then press <b>Copy everything</b> at the bottom and paste it into a reply to my email. Your answers save in this browser as you type, so you can close the page and come back to it.</p>'
        + '<p><b>What I will and will not do.</b> I publish only what you confirm here. I do not invent awards, dates, titles, quotes, publications or employment history, and I do not round anything up. If a detail is missing I will ask you again rather than guess.</p>'
        + '</div></header>';
 
@@ -379,17 +366,13 @@ footer.end{ margin-top:34px; padding-top:22px; border-top:1px solid var(--rule);
     });
 
     h += '<div class="actions"><div class="actions-in">'
-       + (canSubmit ? '<button id="submit" type="button">Send to Rana</button>' : '')
-       + '<button id="copy" class="' + (canSubmit ? 'ghost' : '') + '" type="button">Copy everything</button>'
+       + '<button id="copy" type="button">Copy everything</button>'
        + '<a id="dl" class="dlbtn" download="website-intake.txt" href="#">Save as a file</a>'
        + '<p class="say" id="say" role="status" aria-live="polite"></p>'
        + '</div></div>';
 
     h += '<footer class="end">'
-       + '<p>' + (canSubmit
-            ? 'Until you press Send, your answers exist only in this browser on this device.'
-            : 'Your answers exist only in this browser on this device. Nothing is sent anywhere until you copy them and send them yourself.')
-       + ' Clearing your browser data will clear them.</p>'
+       + '<p>Your answers exist only in this browser on this device. Nothing is sent anywhere until you copy them and send them yourself. Clearing your browser data will clear them.</p>'
        + '<p><button id="clear" class="ghost" type="button">Clear the draft</button></p>'
        + '<p>Rana Tahir Bilal &middot; Website intake</p></footer></div>';
 
@@ -407,51 +390,6 @@ footer.end{ margin-top:34px; padding-top:22px; border-top:1px solid var(--rule);
       + '<label class="q" for="f_' + f.id + '">' + f.q + tag + '</label>'
       + (f.hint ? '<p class="hint' + (f.flag ? ' flag' : '') + '">' + f.hint + '</p>' : '')
       + control + '</div>';
-  }
-
-  function renderSent(){
-    var when = get(SENT_KEY);
-    var d = when ? new Date(when) : null;
-    var stamp = d && !isNaN(d.getTime())
-      ? d.toLocaleDateString(undefined, { year:'numeric', month:'long', day:'numeric' }) : '';
-    var seed = loadDraft();
-    var who = (seed.name || '').trim();
-
-    var h = '<div class="wrap"><header class="top">'
-      + '<p class="kicker">Rana Tahir Bilal &middot; Website intake</p>'
-      + '<h1>Thank you. That has reached me.</h1>'
-      + '<div class="note good"><p><b>Sent' + (stamp ? ' ' + esc(stamp) : '') + '.</b> '
-      + 'I will read it properly and come back to you with anything that needs pinning down. '
-      + 'If you remember something afterwards, reopen this page and add it &mdash; you can send it again as many times as you like.</p></div>'
-      + '<p class="lede">Please send any photographs by reply to my email. Original files, at the largest size you have.</p>'
-      + '</header>';
-
-    h += '<section><span class="sec-n">Your answers</span><h2>What you told me'
-       + (who ? ', ' + esc(who) : '') + '</h2>';
-    SECTIONS.forEach(function(s){
-      s.fields.forEach(function(f){
-        var v = (seed[f.id] || '').trim();
-        h += '<div class="ans"><p class="ans-q">' + stripTags(f.q) + '</p>'
-           + '<p class="ans-a' + (v ? '' : ' empty') + '">' + (v ? esc(v) : 'Not answered') + '</p></div>';
-      });
-    });
-    h += '</section>';
-
-    h += '<div class="actions"><div class="actions-in">'
-       + '<button id="edit" type="button">Add to or change my answers</button>'
-       + '<button id="copy" class="ghost" type="button">Copy everything</button>'
-       + '<a id="dl" class="dlbtn" download="website-intake.txt" href="#">Save as a file</a>'
-       + '<p class="say" id="say" role="status" aria-live="polite"></p>'
-       + '</div></div>';
-
-    h += '<footer class="end"><p>Rana Tahir Bilal &middot; Website intake</p></footer></div>';
-
-    app.innerHTML = h;
-    document.getElementById('edit').addEventListener('click', function(){
-      window.__editing = true;
-      render();
-    });
-    wireExport(function(){ return transcript(loadDraft()); });
   }
 
   /* ---------- form behaviour ---------- */
@@ -508,13 +446,10 @@ footer.end{ margin-top:34px; padding-top:22px; border-top:1px solid var(--rule);
         var el = document.getElementById('f_' + f.id);
         if (el) { el.value = ''; }
       });
-      del(DRAFT_KEY); del(SENT_KEY);
+      del(DRAFT_KEY);
       progress();
       tell('Draft cleared.');
     });
-
-    var sb = document.getElementById('submit');
-    if (sb) { sb.addEventListener('click', onSubmit); }
   }
 
   function wireExport(getText){
@@ -581,64 +516,6 @@ footer.end{ margin-top:34px; padding-top:22px; border-top:1px solid var(--rule);
     if (!say) { return; }
     say.textContent = msg;
     say.className = 'say' + (kind ? ' ' + kind : '');
-  }
-
-  /* ---------- submit ---------- */
-  function onSubmit(){
-    if (busy) { return; }
-    var answers = collect();
-    var missing = ALL.filter(function(f){ return f.req && !answers[f.id]; });
-    if (missing.length) {
-      var first = document.getElementById('f_' + missing[0].id);
-      if (first) { first.focus(); first.scrollIntoView({ block:'center' }); }
-      tell(missing.length + ' required question' + (missing.length === 1 ? ' is' : 's are')
-           + ' still blank. Answer them, or press Send again to submit it as it stands.', 'bad');
-      var b = document.getElementById('submit');
-      b.removeEventListener('click', onSubmit);
-      b.addEventListener('click', function(){ send(collect()); });
-      return;
-    }
-    send(answers);
-  }
-
-  function send(answers){
-    if (busy) { return; }
-    busy = true;
-    window.clearTimeout(saveTimer);
-    var btn = document.getElementById('submit');
-    if (btn) { btn.disabled = true; btn.textContent = 'Sending\u2026'; }
-    tell('Sending\u2026');
-
-    set(DRAFT_KEY, JSON.stringify(answers));
-
-    var payload = {
-      access_key: ACCESS_KEY,
-      subject: 'Website intake' + (answers.name ? ' \u2014 ' + answers.name : ''),
-      from_name: answers.name || 'Website intake',
-      name: answers.name || '',
-      email: answers.email || '',
-      message: transcript(answers)
-    };
-
-    fetch(ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type':'application/json', 'Accept':'application/json' },
-      body: JSON.stringify(payload)
-    }).then(function(r){
-      return r.json().catch(function(){ return { success: r.ok }; });
-    }).then(function(res){
-      if (res && res.success) {
-        set(SENT_KEY, new Date().toISOString());
-        window.__editing = false;
-        render();
-      } else {
-        throw new Error((res && res.message) || 'rejected');
-      }
-    }).catch(function(){
-      busy = false;
-      if (btn) { btn.disabled = false; btn.textContent = 'Send to Rana'; }
-      tell('That did not send \u2014 it may be your connection. Press \u201cCopy everything\u201d and paste it into a reply to my email instead.', 'bad');
-    });
   }
 
   render();
