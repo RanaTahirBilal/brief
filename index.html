@@ -1,0 +1,646 @@
+<title>Before I Build Your Site</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style id="app-css">
+/* ==========================================================
+   INTAKE QUESTIONNAIRE
+   A manuscript, not a form. The questions are set in a
+   bookish serif because they are somebody asking; the
+   answers are set in a plain sans because they are somebody
+   writing; the annotations are mono because they are the
+   my margin notes. Sections are numbered because this
+   genuinely is a sequence you work through, not decoration.
+   ========================================================== */
+
+:root{
+    --paper:#F7F4EE;
+    --card:#FFFDF9;
+    --ink:#23201C;
+    --ink-2:#3D3830;
+    --muted:#6B655C;
+    --rule:#DDD6C9;
+    --rule-soft:#EAE4D9;
+    --pen:#2E4A7D;
+    --pen-soft:#E4EAF4;
+    --flag:#9C4221;
+    --ok:#2F6B4F;
+    --ok-soft:#E3EFE8;
+
+    --serif:'Newsreader',Georgia,'Times New Roman',serif;
+    --sans:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+
+    --measure:64ch;
+    --gutter:clamp(18px,4vw,40px);
+}
+
+@media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+        --paper:#17150F;
+        --card:#1F1C16;
+        --ink:#EFEADF;
+        --ink-2:#D6CFC2;
+        --muted:#A29A8C;
+        --rule:#3A352B;
+        --rule-soft:#2C271F;
+        --pen:#93B0DF;
+        --pen-soft:#232B39;
+        --flag:#E0956C;
+        --ok:#7FC0A0;
+        --ok-soft:#1E2A24;
+    }
+}
+:root[data-theme="dark"]{
+    --paper:#17150F;
+    --card:#1F1C16;
+    --ink:#EFEADF;
+    --ink-2:#D6CFC2;
+    --muted:#A29A8C;
+    --rule:#3A352B;
+    --rule-soft:#2C271F;
+    --pen:#93B0DF;
+    --pen-soft:#232B39;
+    --flag:#E0956C;
+    --ok:#7FC0A0;
+    --ok-soft:#1E2A24;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16.5px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+}
+
+.bar{ position:sticky; top:0; z-index:40; background:var(--paper); border-bottom:1px solid var(--rule); }
+.bar-track{ height:3px; background:var(--rule-soft); }
+.bar-fill{ height:3px; width:0%; background:var(--pen); transition:width .3s ease; }
+@media (prefers-reduced-motion: reduce){ .bar-fill{ transition:none; } }
+.bar-row{
+    display:flex; align-items:center; justify-content:space-between; gap:14px;
+    max-width:var(--measure); margin:0 auto; padding:10px var(--gutter);
+    font-family:var(--mono); font-size:12px; letter-spacing:.02em; color:var(--muted);
+}
+.bar-row b{ color:var(--ink); font-weight:500; }
+
+.wrap{ max-width:var(--measure); margin:0 auto; padding:0 var(--gutter) 60px; }
+
+header.top{ padding:clamp(44px,8vw,84px) 0 clamp(26px,4vw,40px); }
+.kicker{ font-family:var(--mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--pen); margin:0 0 18px; }
+h1{
+    font-family:var(--serif); font-weight:500;
+    font-size:clamp(34px,7vw,52px); line-height:1.1; letter-spacing:-.015em;
+    margin:0 0 20px; text-wrap:balance;
+}
+.lede{ font-family:var(--serif); font-size:clamp(18px,2.6vw,21px); line-height:1.6; color:var(--ink-2); margin:0 0 16px; }
+.lede em{ font-style:italic; }
+
+.note{ border-left:2px solid var(--pen); background:var(--pen-soft); padding:16px 18px; margin:26px 0 0; font-size:14.5px; line-height:1.6; }
+.note.good{ border-left-color:var(--ok); background:var(--ok-soft); }
+.note p{ margin:0 0 9px; }
+.note p:last-child{ margin:0; }
+.note b{ font-weight:600; }
+
+section{ padding:clamp(34px,5vw,52px) 0 8px; border-top:1px solid var(--rule); margin-top:clamp(30px,4vw,44px); }
+.sec-n{ font-family:var(--mono); font-size:12px; letter-spacing:.1em; color:var(--pen); display:block; margin:0 0 8px; }
+h2{
+    font-family:var(--serif); font-weight:500;
+    font-size:clamp(24px,4.4vw,32px); line-height:1.2; letter-spacing:-.01em;
+    margin:0 0 10px; text-wrap:balance;
+}
+.sec-sub{ color:var(--muted); font-size:15px; margin:0 0 8px; max-width:56ch; }
+
+.f{ margin:30px 0 0; }
+.q{ font-family:var(--serif); font-size:19px; line-height:1.45; display:block; margin:0 0 5px; color:var(--ink); }
+.q em{ font-style:italic; }
+.hint{ font-family:var(--mono); font-size:12.5px; line-height:1.55; color:var(--muted); margin:0 0 10px; max-width:58ch; }
+.hint.flag{ color:var(--flag); }
+
+.tag{
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.09em; text-transform:uppercase;
+    vertical-align:2px; margin-left:8px; padding:2px 6px;
+    border:1px solid var(--rule); border-radius:2px; color:var(--muted); white-space:nowrap;
+}
+.tag.req{ color:var(--pen); border-color:var(--pen); }
+
+input[type=text], input[type=email], input[type=url], input[type=tel], textarea{
+    width:100%; display:block;
+    font-family:var(--sans); font-size:16.5px; line-height:1.6; color:var(--ink);
+    background:var(--card); border:1px solid var(--rule); border-radius:3px; padding:11px 13px;
+    transition:border-color .15s ease, box-shadow .15s ease;
+}
+@media (prefers-reduced-motion: reduce){ input, textarea{ transition:none; } }
+textarea{ min-height:104px; resize:vertical; }
+textarea.tall{ min-height:170px; }
+input:focus-visible, textarea:focus-visible{ outline:none; border-color:var(--pen); box-shadow:0 0 0 3px var(--pen-soft); }
+input:hover, textarea:hover{ border-color:var(--muted); }
+.filled{ border-left:2px solid var(--ok); }
+
+.grid2{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+@media (max-width:620px){ .grid2{ grid-template-columns:1fr; } }
+
+.actions{
+    position:sticky; bottom:0; z-index:40;
+    background:var(--paper); border-top:1px solid var(--rule);
+    padding:14px var(--gutter) calc(14px + env(safe-area-inset-bottom,0px));
+    margin:clamp(40px,6vw,64px) calc(var(--gutter) * -1) 0;
+}
+.actions-in{ max-width:var(--measure); margin:0 auto; display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+button{
+    font-family:var(--mono); font-size:13px; letter-spacing:.03em;
+    padding:11px 17px; border-radius:3px; cursor:pointer;
+    border:1px solid var(--pen); background:var(--pen); color:#fff;
+    transition:background .15s ease, color .15s ease, transform .1s ease;
+}
+button.ghost{ background:transparent; color:var(--pen); }
+button[disabled]{ opacity:.5; cursor:not-allowed; }
+button:hover:not([disabled]){ transform:translateY(-1px); }
+button.ghost:hover:not([disabled]){ background:var(--pen-soft); }
+button:focus-visible{ outline:2px solid var(--ink); outline-offset:2px; }
+@media (prefers-reduced-motion: reduce){ button:hover{ transform:none; } }
+.say{ font-family:var(--mono); font-size:12.5px; color:var(--muted); flex:1 1 100%; margin:2px 0 0; min-height:18px; }
+.say.good{ color:var(--ok); }
+.say.bad{ color:var(--flag); }
+
+.ans{ margin:26px 0 0; padding:0 0 20px; border-bottom:1px solid var(--rule-soft); }
+.ans-q{ font-family:var(--mono); font-size:12px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); margin:0 0 6px; }
+.ans-a{ font-family:var(--serif); font-size:18px; line-height:1.55; margin:0; white-space:pre-wrap; }
+.ans-a.empty{ color:var(--muted); font-style:italic; }
+
+footer.end{ margin-top:34px; padding-top:22px; border-top:1px solid var(--rule); font-family:var(--mono); font-size:12px; line-height:1.7; color:var(--muted); }
+
+.boot{ max-width:var(--measure); margin:0 auto; padding:60px var(--gutter); font-family:var(--serif); font-size:20px; color:var(--muted); }
+
+/* A link styled as a button: the download and the upload folder are both
+   navigations, not form controls, so they stay anchors for keyboard and
+   right-click behaviour and borrow the button's look. */
+.dlbtn{
+    display:inline-block; font-family:var(--mono); font-size:13px; letter-spacing:.03em;
+    padding:11px 17px; border-radius:3px; text-decoration:none;
+    border:1px solid var(--pen); background:transparent; color:var(--pen);
+    transition:background .15s ease, transform .1s ease;
+}
+.dlbtn:hover{ background:var(--pen-soft); transform:translateY(-1px); }
+.dlbtn:focus-visible{ outline:2px solid var(--ink); outline-offset:2px; }
+@media (prefers-reduced-motion: reduce){ .dlbtn:hover{ transform:none; } }
+
+.drop{
+    margin:26px 0 0; padding:20px 22px;
+    border:1px dashed var(--pen); border-radius:4px; background:var(--pen-soft);
+}
+.drop-h{ font-family:var(--serif); font-size:20px; margin:0 0 6px; color:var(--ink); }
+.drop-p{ font-family:var(--mono); font-size:12.5px; line-height:1.6; color:var(--muted); margin:0 0 14px; max-width:58ch; }
+.drop-a{ background:var(--pen); color:#fff; border-color:var(--pen); }
+.drop-a:hover{ background:var(--ink); border-color:var(--ink); color:#fff; }
+.drop p:last-child{ margin:0; }
+</style>
+
+<div id="app"><p class="boot">Loading the questionnaire&hellip; if this message stays, JavaScript is switched off in this browser.</p></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ==========================================================
+     Static build for ranatahirbilal.github.io.
+     Answers are POSTed to a form endpoint that emails them on.
+     If no key is configured the Submit button never appears and
+     the page falls back to Copy, so it is always usable.
+     ========================================================== */
+
+  var ACCESS_KEY = '';                       /* <- Web3Forms access key goes here */
+  var UPLOAD_URL = '';                       /* <- Drive/Dropbox upload folder goes here */
+  var ENDPOINT   = 'https://api.web3forms.com/submit';
+  var canSubmit  = ACCESS_KEY.length > 0;
+  var canUpload  = UPLOAD_URL.length > 0;
+
+  var SECTIONS = [
+    { n:'01', t:'The basics', sub:'Exactly as you want them printed. Spelling, middle initial, punctuation, all of it.', fields:[
+      { id:'name',  q:'Your full name, as it should appear on the site', req:true, hint:'Include any suffix you use professionally &mdash; MD, RN, CFP, PhD, Esq.' },
+      { id:'called', q:'What do people actually call you?', hint:'The name you’d use in a conversation. I use it in the running text so the site doesn’t read like a legal document.' },
+      { id:'title', q:'Current title', req:true, hint:'Your real one, not a flattering version.', half:true },
+      { id:'org',   q:'Organization', req:true, hint:'Full legal name if it differs from the trading name.', half:true },
+      { id:'city',  q:'City and state', hint:'Where you work, not where you were born.', half:true },
+      { id:'years', q:'Years in this field', hint:'A number, or the year you started. I will do the arithmetic and check it.', half:true },
+      { id:'email', q:'Contact email for the site', hint:'This will be public. Use one you’re happy to publish.', half:true, type:'email' },
+      { id:'phone', q:'Contact phone', opt:true, hint:'Leave blank if you’d rather not publish one.', half:true, type:'tel' },
+      { id:'links', q:'Any existing links', area:true, hint:'Employer bio page, LinkedIn, professional directory, old site, anything at all. One per line. If there are none, write &ldquo;none&rdquo; &mdash; that tells me something too.' }
+    ]},
+    { n:'02', t:'The one-line answer', sub:'This becomes the first thing anyone reads. It is the hardest question here, so take a run at it and don’t polish.', fields:[
+      { id:'oneline', q:'Someone at a party asks what you do. What do you actually say?', req:true, area:true, hint:'Not your job title. The sentence you say out loud.' },
+      { id:'matter',  q:'And why does it matter?', area:true, hint:'What is different for someone because you did your job well?' }
+    ]},
+    { n:'03', t:'The work, now', sub:'What you’re responsible for today.', fields:[
+      { id:'orgdoes',  q:'What does your organization do?', area:true, hint:'In plain words. Assume the reader has never heard of it.' },
+      { id:'day',      q:'Walk me through a real working day.', req:true, area:true, tall:true, hint:'Concrete beats abstract. &ldquo;I start at 6:45 and take report on four patients&rdquo; is worth more than &ldquo;I provide patient-centred care.&rdquo;' },
+      { id:'who',      q:'Who do you serve, and who hires you?', area:true, hint:'If people find you and reach out, say who they are and what they usually want.' },
+      { id:'services', q:'List the specific things you do, as services.', area:true, hint:'One per line, three to six of them. These become the section the site is built around.' }
+    ]},
+    { n:'04', t:'How you got here', sub:'I build a real timeline, so I need years. An approximate year is fine if you say it’s approximate — a wrong exact year is not.', fields:[
+      { id:'first', q:'Your first job, and what it taught you.', area:true, hint:'Including the ones that had nothing to do with this. Those are usually the interesting part.' },
+      { id:'roles', q:'Every role since, in order.', req:true, area:true, tall:true, hint:'One per line, like this &mdash; <b>2011&ndash;2016 &middot; Staff Nurse &middot; St Luke’s, Houston &middot; night shift, cardiac floor.</b> Gaps are fine; say what you were doing.' },
+      { id:'turn',  q:'Was there a turning point?', area:true, hint:'A moment, a decision, a person, a bad year. The thing that made the path bend.' }
+    ]},
+    { n:'05', t:'Education and credentials', sub:'I print these exactly. Nothing goes on the site that you haven’t written here.', fields:[
+      { id:'edu',     q:'Degrees and institutions, with years.', area:true, hint:'One per line &mdash; <b>2009 &middot; BSN &middot; University of Texas at Austin.</b> Include honours only if they were formally awarded.' },
+      { id:'licence', q:'Licences and certifications, with the issuing body.', area:true, hint:'One per line, with the year and, if it applies, the state or jurisdiction and whether it’s current.' },
+      { id:'member',  q:'Professional memberships and boards.', area:true, hint:'Organization, your role in it, and the years.' }
+    ]},
+    { n:'06', t:'Recognition', sub:'Only if it genuinely happened.', fields:[
+      { id:'awards', q:'Awards, honours and listings.', area:true, tall:true, flag:true, hint:'I need three things for each or I cannot publish it: the exact name of the award, who gave it, and the year. &ldquo;Recognised in the industry&rdquo; is not something I can put on a website.' },
+      { id:'press',  q:'Press, interviews, podcasts, panels.', area:true, hint:'Outlet, what it was, the date, and a link if one exists.' }
+    ]},
+    { n:'07', t:'Anything you’ve published', sub:'Books, papers, articles, courses, talks.', fields:[
+      { id:'pub',      q:'Title, publisher, date.', area:true, tall:true, hint:'For a book, add the ISBN and where it can actually be bought. I will not put a &ldquo;Buy now&rdquo; button on the site unless it leads somewhere real &mdash; if it’s out of print or unavailable, say so and I will show that honestly instead.' },
+      { id:'pubprice', q:'Current price and format, if it’s for sale.', area:true, hint:'Prices go stale fast. I would usually rather leave them off than print a wrong one &mdash; tell me what you’d prefer.' }
+    ]},
+    { n:'08', t:'What you actually think', sub:'This is the part that stops a personal site reading like a CV. Spend the most time here.', fields:[
+      { id:'believe', q:'What do you believe about your work that not everyone in your field agrees with?', req:true, area:true, tall:true, hint:'Say the unfashionable version. I can soften it later if you want.' },
+      { id:'mistake', q:'What is the most expensive mistake you see people make?', area:true, hint:'Clients, patients, colleagues, whoever it applies to.' },
+      { id:'advice',  q:'What would you tell someone starting out today?', area:true, hint:'Including what you’d tell them not to bother with.' }
+    ]},
+    { n:'09', t:'One story', sub:'If I get nothing else from this form, I want this.', fields:[
+      { id:'story', q:'Tell me about one thing that happened.', req:true, area:true, tall:true, hint:'A day, a case, a client, a call, a decision. It does not have to be flattering and it does not have to have a neat ending. Change names or leave them out if you need to &mdash; and tell me if any detail must not be published.' },
+      { id:'proud', q:'And what are you most proud of?', area:true, hint:'It doesn’t have to be the biggest thing. Often it isn’t.' }
+    ]},
+    { n:'10', t:'In your own words', fields:[
+      { id:'quote', q:'Two or three sentences you’d be happy to see quoted verbatim.', area:true, tall:true, hint:'I will print these exactly as written, in quotation marks, attributed to you. Nothing else on the site will be presented as a direct quote from you.' }
+    ]},
+    { n:'11', t:'What other people say', fields:[
+      { id:'testi',   q:'Testimonials, in full.', area:true, tall:true, flag:true, hint:'For each one: the exact words, the person’s name, and their role or relationship to you. I do not publish anonymous or paraphrased testimonials, and I do not split one person’s words across two names.' },
+      { id:'testiok', q:'Do you have permission to publish each of these?', req:true, area:true, hint:'Name any you’re unsure about. I’ll leave those out until it’s confirmed.' }
+    ]},
+    { n:'12', t:'Photographs', sub:'A personal site with no picture of the person doesn’t work. This is the section people skip and then regret.',
+      blurb: function(){
+        /* The upload folder is optional config. Without it the panel still
+           appears and tells her to reply by email, so the section never
+           leaves her without an instruction. */
+        return canUpload
+          ? '<div class="drop"><p class="drop-h">Upload your photographs</p>'
+            + '<p class="drop-p">Opens a private folder. Drag in as many as you like &mdash; originals, not screenshots. '
+            + 'Do this before or after you answer the questions; the two are separate.</p>'
+            + '<p><a class="dlbtn drop-a" href="' + UPLOAD_URL + '" target="_blank" rel="noopener noreferrer">Open the upload folder</a></p></div>'
+          : '<div class="drop"><p class="drop-h">Sending your photographs</p>'
+            + '<p class="drop-p">Attach them to a reply to my email &mdash; originals, at the largest size you have, not screenshots. '
+            + 'Send them separately from these answers; the two do not need to arrive together.</p></div>';
+      },
+      fields:[
+      { id:'photos',    q:'What photographs do you have?', req:true, area:true, hint:'List what exists, even roughly &mdash; a professional headshot, phone photos, photos from an event, an old ID badge photo. If the honest answer is &ldquo;almost nothing,&rdquo; say that; it changes how I build the site.' },
+      { id:'photoright',q:'Who took them, and may I publish them?', req:true, area:true, flag:true, hint:'If a photographer or your employer holds the rights, I need that cleared before it goes up. Tell me about any photo I must not use.' },
+      { id:'photoai',   q:'May I create additional pictures of you for the site?', area:true, flag:true, hint:'Most sites need shots nobody has &mdash; you at work, in your own setting. Where no such photograph exists I can produce illustrated versions built from the photographs you send: pictures of you that no camera actually took. They are marked as illustrations in the footer so nobody is misled. I will not make a single one without your written yes here. Say yes, no, or ask me first.' }
+    ]},
+    { n:'13', t:'Lines I shouldn’t cross', fields:[
+      { id:'no',     q:'What do you <em>not</em> want on this site?', req:true, area:true, hint:'Topics, a former employer, your home town, family, a period of your life, a photograph, your phone number. Anything. This is the most useful answer on the page.' },
+      { id:'review', q:'Does anyone need to approve this before it goes live?', area:true, flag:true, hint:'Employer communications, a compliance officer, a licensing board, a publisher. If you’re a regulated professional the answer is usually yes. Tell me who and I will build to their timeline.' }
+    ]},
+    { n:'14', t:'Practical', fields:[
+      { id:'when',   q:'When do you need it?', hint:'And what’s driving that date.', half:true },
+      { id:'domain', q:'Do you own a domain?', hint:'Or should I host it for now and move it later.', half:true },
+      { id:'like',   q:'Is there a website whose feel you like?', area:true, hint:'Any site at all, in any industry. Paste the address and say what you like about it. One line is enough.' },
+      { id:'else',   q:'Anything I didn’t ask?', area:true, tall:true, hint:'This box is where the best material usually turns up.' }
+    ]}
+  ];
+
+  var ALL = [];
+  SECTIONS.forEach(function(s){ s.fields.forEach(function(f){ ALL.push(f); }); });
+
+  var DRAFT_KEY = 'rtb-intake-v1';
+  var SENT_KEY  = 'rtb-intake-sent-v1';
+  var app = document.getElementById('app');
+  var busy = false;
+  var saveTimer = null;
+
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+    });
+  }
+  function stripTags(s){ return String(s).replace(/<[^>]*>/g, ''); }
+
+  /* localStorage is a per-device convenience. Private windows and blocked
+     site data throw on access, so every call is guarded and the page has to
+     work with nothing stored. */
+  function get(k){ try { return window.localStorage.getItem(k); } catch (e) { return null; } }
+  function set(k,v){ try { window.localStorage.setItem(k,v); return true; } catch (e) { return false; } }
+  function del(k){ try { window.localStorage.removeItem(k); } catch (e) { /* nothing stored */ } }
+
+  function loadDraft(){
+    var raw = get(DRAFT_KEY);
+    if (!raw) { return {}; }
+    try { return JSON.parse(raw) || {}; } catch (e) { return {}; }
+  }
+
+  /* ---------- views ---------- */
+  function render(){
+    if (get(SENT_KEY) && !window.__editing) { renderSent(); } else { renderForm(); }
+    window.scrollTo(0,0);
+  }
+
+  function renderForm(){
+    var seed = loadDraft();
+    var h = '';
+
+    h += '<div class="bar"><div class="bar-track"><div class="bar-fill" id="fill"></div></div>'
+       + '<div class="bar-row"><span><b id="done">0</b> of <b id="total">' + ALL.length + '</b> answered</span>'
+       + '<span id="saved">saved on this device</span></div></div>';
+
+    h += '<div class="wrap"><header class="top">'
+       + '<p class="kicker">Rana Tahir Bilal &middot; Website intake</p>'
+       + '<h1>Before I build your site, I need to hear it from you.</h1>'
+       + '<p class="lede">There is very little about you online, which is a good problem &mdash; it means the site will be the first proper account of your work rather than a rehash of someone else\u2019s. But it means I cannot write a word of it until you tell me.</p>'
+       + '<p class="lede">Answer in whatever voice you actually speak in. <em>Fragments are fine. Long is better than short.</em> I will do the shaping.</p>'
+       + '<div class="note">'
+       + (canSubmit
+            ? '<p><b>How this works.</b> Answer as much as you can, then press <b>Send to Rana</b> at the bottom. Your answers save in this browser as you type, so you can close the page and come back to it.</p>'
+            : '<p><b>How this works.</b> Answer as much as you can, then press <b>Copy everything</b> at the bottom and paste it into a reply to my email. Your answers save in this browser as you type, so you can close the page and come back to it.</p>')
+       + '<p><b>What I will and will not do.</b> I publish only what you confirm here. I do not invent awards, dates, titles, quotes, publications or employment history, and I do not round anything up. If a detail is missing I will ask you again rather than guess.</p>'
+       + '</div></header>';
+
+    SECTIONS.forEach(function(s){
+      h += '<section><span class="sec-n">' + s.n + '</span><h2>' + s.t + '</h2>';
+      if (s.sub) { h += '<p class="sec-sub">' + s.sub + '</p>'; }
+      if (s.blurb) { h += s.blurb(); }
+      var i = 0;
+      while (i < s.fields.length) {
+        var f = s.fields[i];
+        if (f.half && s.fields[i+1] && s.fields[i+1].half) {
+          h += '<div class="grid2">' + field(f, seed) + field(s.fields[i+1], seed) + '</div>';
+          i += 2;
+        } else { h += field(f, seed); i += 1; }
+      }
+      h += '</section>';
+    });
+
+    h += '<div class="actions"><div class="actions-in">'
+       + (canSubmit ? '<button id="submit" type="button">Send to Rana</button>' : '')
+       + '<button id="copy" class="' + (canSubmit ? 'ghost' : '') + '" type="button">Copy everything</button>'
+       + '<a id="dl" class="dlbtn" download="website-intake.txt" href="#">Save as a file</a>'
+       + '<p class="say" id="say" role="status" aria-live="polite"></p>'
+       + '</div></div>';
+
+    h += '<footer class="end">'
+       + '<p>' + (canSubmit
+            ? 'Until you press Send, your answers exist only in this browser on this device.'
+            : 'Your answers exist only in this browser on this device. Nothing is sent anywhere until you copy them and send them yourself.')
+       + ' Clearing your browser data will clear them.</p>'
+       + '<p><button id="clear" class="ghost" type="button">Clear the draft</button></p>'
+       + '<p>Rana Tahir Bilal &middot; Website intake</p></footer></div>';
+
+    app.innerHTML = h;
+    wireForm();
+  }
+
+  function field(f, seed){
+    var v = seed && typeof seed[f.id] === 'string' ? seed[f.id] : '';
+    var tag = f.req ? '<span class="tag req">Required</span>' : (f.opt ? '<span class="tag">Optional</span>' : '');
+    var control = f.area
+      ? '<textarea id="f_' + f.id + '" data-f="' + f.id + '"' + (f.tall ? ' class="tall"' : '') + '>' + esc(v) + '</textarea>'
+      : '<input type="' + (f.type || 'text') + '" id="f_' + f.id + '" data-f="' + f.id + '" value="' + esc(v) + '">';
+    return '<div class="f">'
+      + '<label class="q" for="f_' + f.id + '">' + f.q + tag + '</label>'
+      + (f.hint ? '<p class="hint' + (f.flag ? ' flag' : '') + '">' + f.hint + '</p>' : '')
+      + control + '</div>';
+  }
+
+  function renderSent(){
+    var when = get(SENT_KEY);
+    var d = when ? new Date(when) : null;
+    var stamp = d && !isNaN(d.getTime())
+      ? d.toLocaleDateString(undefined, { year:'numeric', month:'long', day:'numeric' }) : '';
+    var seed = loadDraft();
+    var who = (seed.name || '').trim();
+
+    var h = '<div class="wrap"><header class="top">'
+      + '<p class="kicker">Rana Tahir Bilal &middot; Website intake</p>'
+      + '<h1>Thank you. That has reached me.</h1>'
+      + '<div class="note good"><p><b>Sent' + (stamp ? ' ' + esc(stamp) : '') + '.</b> '
+      + 'I will read it properly and come back to you with anything that needs pinning down. '
+      + 'If you remember something afterwards, reopen this page and add it &mdash; you can send it again as many times as you like.</p></div>'
+      + '<p class="lede">Please send any photographs by reply to my email. Original files, at the largest size you have.</p>'
+      + '</header>';
+
+    h += '<section><span class="sec-n">Your answers</span><h2>What you told me'
+       + (who ? ', ' + esc(who) : '') + '</h2>';
+    SECTIONS.forEach(function(s){
+      s.fields.forEach(function(f){
+        var v = (seed[f.id] || '').trim();
+        h += '<div class="ans"><p class="ans-q">' + stripTags(f.q) + '</p>'
+           + '<p class="ans-a' + (v ? '' : ' empty') + '">' + (v ? esc(v) : 'Not answered') + '</p></div>';
+      });
+    });
+    h += '</section>';
+
+    h += '<div class="actions"><div class="actions-in">'
+       + '<button id="edit" type="button">Add to or change my answers</button>'
+       + '<button id="copy" class="ghost" type="button">Copy everything</button>'
+       + '<a id="dl" class="dlbtn" download="website-intake.txt" href="#">Save as a file</a>'
+       + '<p class="say" id="say" role="status" aria-live="polite"></p>'
+       + '</div></div>';
+
+    h += '<footer class="end"><p>Rana Tahir Bilal &middot; Website intake</p></footer></div>';
+
+    app.innerHTML = h;
+    document.getElementById('edit').addEventListener('click', function(){
+      window.__editing = true;
+      render();
+    });
+    wireExport(function(){ return transcript(loadDraft()); });
+  }
+
+  /* ---------- form behaviour ---------- */
+  function collect(){
+    var out = {};
+    ALL.forEach(function(f){
+      var el = document.getElementById('f_' + f.id);
+      if (el && el.value.trim()) { out[f.id] = el.value.trim(); }
+    });
+    return out;
+  }
+
+  function wireForm(){
+    var fill = document.getElementById('fill');
+    var doneEl = document.getElementById('done');
+    var savedEl = document.getElementById('saved');
+
+    function progress(){
+      var n = 0;
+      ALL.forEach(function(f){
+        var el = document.getElementById('f_' + f.id);
+        if (!el) { return; }
+        var has = el.value.trim().length > 0;
+        if (has) { n++; }
+        el.classList.toggle('filled', has);
+      });
+      doneEl.textContent = n;
+      fill.style.width = (ALL.length ? (n / ALL.length) * 100 : 0) + '%';
+    }
+
+    ALL.forEach(function(f){
+      var el = document.getElementById('f_' + f.id);
+      if (!el) { return; }
+      el.addEventListener('input', function(){
+        progress();
+        window.clearTimeout(saveTimer);
+        saveTimer = window.setTimeout(function(){
+          /* If the form has already been replaced — she pressed Send inside
+             the debounce window — collect() would find no fields and write an
+             empty draft over her real answers. Bail instead. */
+          if (!document.getElementById('f_name')) { return; }
+          savedEl.textContent = set(DRAFT_KEY, JSON.stringify(collect()))
+            ? 'saved on this device' : 'not saved \u2014 copy before you close';
+        }, 400);
+      });
+    });
+
+    progress();
+    wireExport(function(){ return transcript(collect()); });
+
+    document.getElementById('clear').addEventListener('click', function(){
+      if (!window.confirm('Clear every answer on this device? This cannot be undone.')) { return; }
+      ALL.forEach(function(f){
+        var el = document.getElementById('f_' + f.id);
+        if (el) { el.value = ''; }
+      });
+      del(DRAFT_KEY); del(SENT_KEY);
+      progress();
+      tell('Draft cleared.');
+    });
+
+    var sb = document.getElementById('submit');
+    if (sb) { sb.addEventListener('click', onSubmit); }
+  }
+
+  function wireExport(getText){
+    var copy = document.getElementById('copy');
+    if (copy) {
+      copy.addEventListener('click', function(){
+        var text = getText();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text)
+            .then(function(){ tell('Copied to your clipboard.', 'good'); })
+            .catch(function(){ fallbackCopy(text); });
+        } else { fallbackCopy(text); }
+      });
+    }
+    var dl = document.getElementById('dl');
+    if (dl) {
+      dl.addEventListener('click', function(){
+        /* Built at click time so the file always holds the latest answers. */
+        var nm = (nameNow() || 'intake').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-|-$/g,'') || 'intake';
+        var blob = new Blob([getText()], { type:'text/plain;charset=utf-8' });
+        dl.href = URL.createObjectURL(blob);
+        dl.download = nm + '-website-intake.txt';
+        tell('Saved to your downloads.', 'good');
+      });
+    }
+  }
+
+  function nameNow(){
+    var el = document.getElementById('f_name');
+    if (el) { return el.value.trim(); }
+    return (loadDraft().name || '');
+  }
+
+  function fallbackCopy(text){
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly','');
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    tell(ok ? 'Copied to your clipboard.' : 'Copying was blocked by this browser. Use \u201cSave as a file\u201d instead.', ok ? 'good' : 'bad');
+  }
+
+  function transcript(answers){
+    var out = ['WEBSITE INTAKE' + (answers.name ? ' \u2014 ' + answers.name : ''), ''];
+    SECTIONS.forEach(function(s){
+      out.push('');
+      out.push('== ' + s.t.toUpperCase() + ' ==');
+      s.fields.forEach(function(f){
+        out.push('');
+        out.push(stripTags(f.q));
+        out.push(answers[f.id] ? answers[f.id] : '(not answered)');
+      });
+    });
+    return out.join('\n');
+  }
+
+  function tell(msg, kind){
+    var say = document.getElementById('say');
+    if (!say) { return; }
+    say.textContent = msg;
+    say.className = 'say' + (kind ? ' ' + kind : '');
+  }
+
+  /* ---------- submit ---------- */
+  function onSubmit(){
+    if (busy) { return; }
+    var answers = collect();
+    var missing = ALL.filter(function(f){ return f.req && !answers[f.id]; });
+    if (missing.length) {
+      var first = document.getElementById('f_' + missing[0].id);
+      if (first) { first.focus(); first.scrollIntoView({ block:'center' }); }
+      tell(missing.length + ' required question' + (missing.length === 1 ? ' is' : 's are')
+           + ' still blank. Answer them, or press Send again to submit it as it stands.', 'bad');
+      var b = document.getElementById('submit');
+      b.removeEventListener('click', onSubmit);
+      b.addEventListener('click', function(){ send(collect()); });
+      return;
+    }
+    send(answers);
+  }
+
+  function send(answers){
+    if (busy) { return; }
+    busy = true;
+    window.clearTimeout(saveTimer);
+    var btn = document.getElementById('submit');
+    if (btn) { btn.disabled = true; btn.textContent = 'Sending\u2026'; }
+    tell('Sending\u2026');
+
+    set(DRAFT_KEY, JSON.stringify(answers));
+
+    var payload = {
+      access_key: ACCESS_KEY,
+      subject: 'Website intake' + (answers.name ? ' \u2014 ' + answers.name : ''),
+      from_name: answers.name || 'Website intake',
+      name: answers.name || '',
+      email: answers.email || '',
+      message: transcript(answers)
+    };
+
+    fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json', 'Accept':'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function(r){
+      return r.json().catch(function(){ return { success: r.ok }; });
+    }).then(function(res){
+      if (res && res.success) {
+        set(SENT_KEY, new Date().toISOString());
+        window.__editing = false;
+        render();
+      } else {
+        throw new Error((res && res.message) || 'rejected');
+      }
+    }).catch(function(){
+      busy = false;
+      if (btn) { btn.disabled = false; btn.textContent = 'Send to Rana'; }
+      tell('That did not send \u2014 it may be your connection. Press \u201cCopy everything\u201d and paste it into a reply to my email instead.', 'bad');
+    });
+  }
+
+  render();
+})();
+</script>
